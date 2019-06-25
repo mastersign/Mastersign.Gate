@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://scaleton.mastersign.de/2014/model"
+       xsi:schemaLocation="http://scaleton.mastersign.de/2014/model http://scaleton.mastersign.de/Scaleton_Model_2014.xsd">
+
+  <Configuration modelType="Plain">
+  </Configuration>
+
+  <Types>
+
+    <Class name="Server">
+      <Property name="Host">
+        <DefaultValue>0.0.0.0</DefaultValue>
+      </Property>
+      <Property name="HttpPort" type="UInt16">
+        <DefaultValue>80</DefaultValue>
+      </Property>
+      <Property name="HttpsPort" type="UInt16">
+        <DefaultValue>443</DefaultValue>
+      </Property>
+      <Property name="UseHttp" type="bool">
+        <DefaultValue>false</DefaultValue>
+      </Property>
+      <Property name="UseHttps" type="bool">
+        <DefaultValue>True</DefaultValue>
+      </Property>
+      <Property name="HttpsCertificate" type="Certificate"/>
+      <Property name="Services" type="Service" isCollection="true" />
+    </Class>
+    
+    <Class name="Certificate">
+      <Property name="Country" />
+      <Property name="State" />
+      <Property name="Location" />
+      <Property name="Organization" />
+      <Property name="OrganizationalUnit" />
+      <Property name="CommonName">
+        <DefaultValue>localhost</DefaultValue>
+      </Property>
+      <Property name="ValidDays" type="int">
+        <DefaultValue>365</DefaultValue>
+      </Property>
+      <Property name="Bits" type="int">
+        <DefaultValue>4096</DefaultValue>
+      </Property>
+    </Class>
+
+    <Class name="Service">
+      <Property name="Route">
+        <DefaultValue>/service/</DefaultValue>
+      </Property>
+      <Property name="Url">
+        <DefaultValue>http://127.0.0.1:8080/</DefaultValue>
+      </Property>
+      <Property name="SupportWebSockets" type="bool" />
+      <Property name="UrlRewrite" type="bool" />
+      <Property name="HtmlContentRewrite" type="bool" />
+      <Property name="CssContentRewrite" type="bool" />
+      <Property name="JavaScriptContentRewrite" type="bool" />
+      <Property name="HeaderXForwardedFor" type="bool">
+        <DefaultValue>True</DefaultValue>
+      </Property>
+    </Class>
+
+  </Types>
+</Model>

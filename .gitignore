@@ -1,0 +1,7 @@
+/bin/
+packages/
+obj/
+
+*.suo
+*.cache
+.vs/
