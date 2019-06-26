@@ -1,5 +1,4 @@
-﻿using MahApps.Metro.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,15 +16,13 @@ using System.Windows.Shapes;
 namespace Mastersign.Gate
 {
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// Interaktionslogik für ServerControl.xaml
     /// </summary>
-    public partial class MainWindow : MetroWindow
+    public partial class ServerControl : UserControl
     {
-        public MainWindow()
+        public ServerControl()
         {
             InitializeComponent();
-
-            this.DataContext = new DesignTimeSetup();
         }
     }
 }

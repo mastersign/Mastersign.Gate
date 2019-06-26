@@ -9,6 +9,97 @@ namespace Mastersign.Gate
     
     // Scaleton Version: 0.3.0
     
+    public partial class Setup
+    {
+        public Setup()
+        {
+            this._certificateDirectory = DEF_CERTIFICATEDIRECTORY;
+            this._logDirectory = DEF_LOGDIRECTORY;
+        }
+        
+        #region Property Directory
+        
+        private string _directory;
+        
+        public virtual string Directory
+        {
+            get { return _directory; }
+            set
+            {
+                if (string.Equals(value, _directory))
+                {
+                    return;
+                }
+                _directory = value;
+            }
+        }
+        
+        #endregion
+        
+        #region Property CertificateDirectory
+        
+        private string _certificateDirectory;
+        
+        private const string DEF_CERTIFICATEDIRECTORY = @"certs";
+        
+        [DefaultValue(DEF_CERTIFICATEDIRECTORY)]
+        public virtual string CertificateDirectory
+        {
+            get { return _certificateDirectory; }
+            set
+            {
+                if (string.Equals(value, _certificateDirectory))
+                {
+                    return;
+                }
+                _certificateDirectory = value;
+            }
+        }
+        
+        #endregion
+        
+        #region Property LogDirectory
+        
+        private string _logDirectory;
+        
+        private const string DEF_LOGDIRECTORY = @"logs";
+        
+        [DefaultValue(DEF_LOGDIRECTORY)]
+        public virtual string LogDirectory
+        {
+            get { return _logDirectory; }
+            set
+            {
+                if (string.Equals(value, _logDirectory))
+                {
+                    return;
+                }
+                _logDirectory = value;
+            }
+        }
+        
+        #endregion
+        
+        #region Property Server
+        
+        private Server _server;
+        
+        public virtual Server Server
+        {
+            get { return _server; }
+            set
+            {
+                if ((value == _server))
+                {
+                    return;
+                }
+                _server = value;
+            }
+        }
+        
+        #endregion
+    }
+    
     public partial class Server
     {
         public Server()
@@ -345,10 +436,33 @@ namespace Mastersign.Gate
     {
         public Service()
         {
+            this._name = DEF_NAME;
             this._route = DEF_ROUTE;
             this._url = DEF_URL;
             this._headerXForwardedFor = DEF_HEADERXFORWARDEDFOR;
         }
+        
+        #region Property Name
+        
+        private string _name;
+        
+        private const string DEF_NAME = @"service";
+        
+        [DefaultValue(DEF_NAME)]
+        public virtual string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (string.Equals(value, _name))
+                {
+                    return;
+                }
+                _name = value;
+            }
+        }
+        
+        #endregion
         
         #region Property Route
         

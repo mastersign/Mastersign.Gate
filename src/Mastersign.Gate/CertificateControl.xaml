@@ -1,0 +1,71 @@
+﻿<UserControl x:Class="Mastersign.Gate.CertificateControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Mastersign.Gate"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="600"
+             d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeCertificate}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <Label x:Name="lblCountry" Grid.Row="0" Grid.Column="0"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Content="Country"/>
+        <TextBox x:Name="txtCountry" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,0,6"
+                 Text="{Binding Country}"/>
+        <Label x:Name="lblState" Grid.Row="1" Grid.Column="0"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Content="State"/>
+        <TextBox x:Name="txtState" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,0,6"
+                 Text="{Binding State}"/>
+        <Label x:Name="lblLocation" Grid.Row="2" Grid.Column="0"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Content="Location"/>
+        <TextBox x:Name="txtLocation" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,0,6"
+                 Text="{Binding Location}"/>
+        <Label x:Name="lblOrganization" Grid.Row="3" Grid.Column="0"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Content="Organization"/>
+        <TextBox x:Name="txtOrganization" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,0,6"
+                 Text="{Binding Organization}"/>
+        <Label x:Name="lblOrganizationalUnit" Grid.Row="4" Grid.Column="0"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Content="OrganizationalUnit"/>
+        <TextBox x:Name="txtOrganizationalUnit" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,0,6"
+                 Text="{Binding OrganizationalUnit}"/>
+        <Label x:Name="lblCommonName" Grid.Row="5" Grid.Column="0"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Content="CommonName"/>
+        <TextBox x:Name="txtCommonName" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="3"
+                 HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0,0,0,6"
+                 Text="{Binding CommonName}"/>
+
+        <Label x:Name="lblValidDays" Grid.Row="6" Grid.Column="0"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Content="ValidDays"/>
+        <Controls:NumericUpDown x:Name="txtValidDays" Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="3"
+                 HorizontalAlignment="Left" VerticalAlignment="Top" Width="100" Margin="0,0,0,6"
+                 Value="{Binding ValidDays}" Minimum="1" Maximum="99999"/>
+
+    </Grid>
+</UserControl>

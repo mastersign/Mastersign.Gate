@@ -5,10 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:Mastersign.Gate"
+        d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeSetup}}"
         mc:Ignorable="d"
-        Title="Mastersign Gate" Height="450" Width="800"
+        Title="Mastersign Gate" Height="600" Width="800"
         ShowIconOnTitleBar="True" TitleCharacterCasing="Normal">
     <Grid>
-        
+        <Controls:MetroAnimatedSingleRowTabControl Margin="0,16,0,16">
+            <TabItem Header="Configuration">
+                <ScrollViewer Margin="0,8,0,0">
+                    <local:SetupControl Margin="10" />
+                </ScrollViewer>
+            </TabItem>
+            <TabItem Header="Execution">
+                
+            </TabItem>
+        </Controls:MetroAnimatedSingleRowTabControl>
     </Grid>
 </Controls:MetroWindow>

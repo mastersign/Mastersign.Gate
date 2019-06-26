@@ -8,6 +8,17 @@
 
   <Types>
 
+    <Class name="Setup">
+      <Property name="Directory" />
+      <Property name="CertificateDirectory">
+        <DefaultValue>certs</DefaultValue>
+      </Property>
+      <Property name="LogDirectory">
+        <DefaultValue>logs</DefaultValue>
+      </Property>
+      <Property name="Server" type="Server" />
+    </Class>
+
     <Class name="Server">
       <Property name="Host">
         <DefaultValue>0.0.0.0</DefaultValue>
@@ -46,6 +57,9 @@
     </Class>
 
     <Class name="Service">
+      <Property name="Name">
+        <DefaultValue>service</DefaultValue>
+      </Property>
       <Property name="Route">
         <DefaultValue>/service/</DefaultValue>
       </Property>
