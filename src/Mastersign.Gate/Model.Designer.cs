@@ -9,17 +9,69 @@ namespace Mastersign.Gate
     
     // Scaleton Version: 0.3.0
     
-    public partial class Setup
+    public partial class Setup : INotifyPropertyChanged, IChangeTracking
     {
         public Setup()
         {
             this._certificateDirectory = DEF_CERTIFICATEDIRECTORY;
             this._logDirectory = DEF_LOGDIRECTORY;
+            
+            this.IsChanged = false;
         }
+        
+        #region Change Tracking
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+        
+        private bool _isChanged = false;
+        
+        [Browsable(false)]
+        public bool IsChanged
+        {
+            get { return this._isChanged; }
+            protected set
+            {
+                if ((this._isChanged == value))
+                {
+                    return;
+                }
+                this._isChanged = value;
+                this.OnPropertyChanged(@"IsChanged");
+            }
+        }
+        
+        public virtual void AcceptChanges()
+        {
+            this.IsChanged = false;
+        }
+        
+        #endregion
         
         #region Property Directory
         
         private string _directory;
+        
+        public event EventHandler DirectoryChanged;
+        
+        protected virtual void OnDirectoryChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = DirectoryChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Directory");
+        }
         
         public virtual string Directory
         {
@@ -31,6 +83,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _directory = value;
+                this.OnDirectoryChanged();
             }
         }
         
@@ -39,6 +92,19 @@ namespace Mastersign.Gate
         #region Property CertificateDirectory
         
         private string _certificateDirectory;
+        
+        public event EventHandler CertificateDirectoryChanged;
+        
+        protected virtual void OnCertificateDirectoryChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = CertificateDirectoryChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"CertificateDirectory");
+        }
         
         private const string DEF_CERTIFICATEDIRECTORY = @"certs";
         
@@ -53,6 +119,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _certificateDirectory = value;
+                this.OnCertificateDirectoryChanged();
             }
         }
         
@@ -61,6 +128,19 @@ namespace Mastersign.Gate
         #region Property LogDirectory
         
         private string _logDirectory;
+        
+        public event EventHandler LogDirectoryChanged;
+        
+        protected virtual void OnLogDirectoryChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = LogDirectoryChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"LogDirectory");
+        }
         
         private const string DEF_LOGDIRECTORY = @"logs";
         
@@ -75,6 +155,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _logDirectory = value;
+                this.OnLogDirectoryChanged();
             }
         }
         
@@ -83,6 +164,19 @@ namespace Mastersign.Gate
         #region Property Server
         
         private Server _server;
+        
+        public event EventHandler ServerChanged;
+        
+        protected virtual void OnServerChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = ServerChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Server");
+        }
         
         public virtual Server Server
         {
@@ -94,13 +188,14 @@ namespace Mastersign.Gate
                     return;
                 }
                 _server = value;
+                this.OnServerChanged();
             }
         }
         
         #endregion
     }
     
-    public partial class Server
+    public partial class Server : INotifyPropertyChanged, IChangeTracking
     {
         public Server()
         {
@@ -109,12 +204,64 @@ namespace Mastersign.Gate
             this._httpsPort = DEF_HTTPSPORT;
             this._useHttp = DEF_USEHTTP;
             this._useHttps = DEF_USEHTTPS;
-            this._services = new List<Service>();
+            this._services = new global::System.Collections.ObjectModel.ObservableCollection<Service>();
+            
+            this.IsChanged = false;
         }
+        
+        #region Change Tracking
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+        
+        private bool _isChanged = false;
+        
+        [Browsable(false)]
+        public bool IsChanged
+        {
+            get { return this._isChanged; }
+            protected set
+            {
+                if ((this._isChanged == value))
+                {
+                    return;
+                }
+                this._isChanged = value;
+                this.OnPropertyChanged(@"IsChanged");
+            }
+        }
+        
+        public virtual void AcceptChanges()
+        {
+            this.IsChanged = false;
+        }
+        
+        #endregion
         
         #region Property Host
         
         private string _host;
+        
+        public event EventHandler HostChanged;
+        
+        protected virtual void OnHostChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = HostChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Host");
+        }
         
         private const string DEF_HOST = @"0.0.0.0";
         
@@ -129,6 +276,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _host = value;
+                this.OnHostChanged();
             }
         }
         
@@ -137,6 +285,19 @@ namespace Mastersign.Gate
         #region Property HttpPort
         
         private UInt16 _httpPort;
+        
+        public event EventHandler HttpPortChanged;
+        
+        protected virtual void OnHttpPortChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = HttpPortChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"HttpPort");
+        }
         
         private const UInt16 DEF_HTTPPORT = 80;
         
@@ -151,6 +312,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _httpPort = value;
+                this.OnHttpPortChanged();
             }
         }
         
@@ -159,6 +321,19 @@ namespace Mastersign.Gate
         #region Property HttpsPort
         
         private UInt16 _httpsPort;
+        
+        public event EventHandler HttpsPortChanged;
+        
+        protected virtual void OnHttpsPortChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = HttpsPortChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"HttpsPort");
+        }
         
         private const UInt16 DEF_HTTPSPORT = 443;
         
@@ -173,6 +348,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _httpsPort = value;
+                this.OnHttpsPortChanged();
             }
         }
         
@@ -181,6 +357,19 @@ namespace Mastersign.Gate
         #region Property UseHttp
         
         private bool _useHttp;
+        
+        public event EventHandler UseHttpChanged;
+        
+        protected virtual void OnUseHttpChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = UseHttpChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"UseHttp");
+        }
         
         private const bool DEF_USEHTTP = false;
         
@@ -195,6 +384,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _useHttp = value;
+                this.OnUseHttpChanged();
             }
         }
         
@@ -203,6 +393,19 @@ namespace Mastersign.Gate
         #region Property UseHttps
         
         private bool _useHttps;
+        
+        public event EventHandler UseHttpsChanged;
+        
+        protected virtual void OnUseHttpsChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = UseHttpsChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"UseHttps");
+        }
         
         private const bool DEF_USEHTTPS = true;
         
@@ -217,6 +420,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _useHttps = value;
+                this.OnUseHttpsChanged();
             }
         }
         
@@ -225,6 +429,19 @@ namespace Mastersign.Gate
         #region Property HttpsCertificate
         
         private Certificate _httpsCertificate;
+        
+        public event EventHandler HttpsCertificateChanged;
+        
+        protected virtual void OnHttpsCertificateChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = HttpsCertificateChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"HttpsCertificate");
+        }
         
         public virtual Certificate HttpsCertificate
         {
@@ -236,6 +453,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _httpsCertificate = value;
+                this.OnHttpsCertificateChanged();
             }
         }
         
@@ -243,9 +461,22 @@ namespace Mastersign.Gate
         
         #region Property Services
         
-        private List<Service> _services;
+        private global::System.Collections.ObjectModel.ObservableCollection<Service> _services;
         
-        public virtual List<Service> Services
+        public event EventHandler ServicesChanged;
+        
+        protected virtual void OnServicesChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = ServicesChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Services");
+        }
+        
+        public virtual global::System.Collections.ObjectModel.ObservableCollection<Service> Services
         {
             get { return _services; }
             set
@@ -255,24 +486,77 @@ namespace Mastersign.Gate
                     return;
                 }
                 _services = value;
+                this.OnServicesChanged();
             }
         }
         
         #endregion
     }
     
-    public partial class Certificate
+    public partial class Certificate : INotifyPropertyChanged, IChangeTracking
     {
         public Certificate()
         {
             this._commonName = DEF_COMMONNAME;
             this._validDays = DEF_VALIDDAYS;
             this._bits = DEF_BITS;
+            
+            this.IsChanged = false;
         }
+        
+        #region Change Tracking
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+        
+        private bool _isChanged = false;
+        
+        [Browsable(false)]
+        public bool IsChanged
+        {
+            get { return this._isChanged; }
+            protected set
+            {
+                if ((this._isChanged == value))
+                {
+                    return;
+                }
+                this._isChanged = value;
+                this.OnPropertyChanged(@"IsChanged");
+            }
+        }
+        
+        public virtual void AcceptChanges()
+        {
+            this.IsChanged = false;
+        }
+        
+        #endregion
         
         #region Property Country
         
         private string _country;
+        
+        public event EventHandler CountryChanged;
+        
+        protected virtual void OnCountryChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = CountryChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Country");
+        }
         
         public virtual string Country
         {
@@ -284,6 +568,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _country = value;
+                this.OnCountryChanged();
             }
         }
         
@@ -292,6 +577,19 @@ namespace Mastersign.Gate
         #region Property State
         
         private string _state;
+        
+        public event EventHandler StateChanged;
+        
+        protected virtual void OnStateChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = StateChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"State");
+        }
         
         public virtual string State
         {
@@ -303,6 +601,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _state = value;
+                this.OnStateChanged();
             }
         }
         
@@ -311,6 +610,19 @@ namespace Mastersign.Gate
         #region Property Location
         
         private string _location;
+        
+        public event EventHandler LocationChanged;
+        
+        protected virtual void OnLocationChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = LocationChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Location");
+        }
         
         public virtual string Location
         {
@@ -322,6 +634,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _location = value;
+                this.OnLocationChanged();
             }
         }
         
@@ -330,6 +643,19 @@ namespace Mastersign.Gate
         #region Property Organization
         
         private string _organization;
+        
+        public event EventHandler OrganizationChanged;
+        
+        protected virtual void OnOrganizationChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = OrganizationChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Organization");
+        }
         
         public virtual string Organization
         {
@@ -341,6 +667,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _organization = value;
+                this.OnOrganizationChanged();
             }
         }
         
@@ -349,6 +676,19 @@ namespace Mastersign.Gate
         #region Property OrganizationalUnit
         
         private string _organizationalUnit;
+        
+        public event EventHandler OrganizationalUnitChanged;
+        
+        protected virtual void OnOrganizationalUnitChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = OrganizationalUnitChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"OrganizationalUnit");
+        }
         
         public virtual string OrganizationalUnit
         {
@@ -360,6 +700,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _organizationalUnit = value;
+                this.OnOrganizationalUnitChanged();
             }
         }
         
@@ -368,6 +709,19 @@ namespace Mastersign.Gate
         #region Property CommonName
         
         private string _commonName;
+        
+        public event EventHandler CommonNameChanged;
+        
+        protected virtual void OnCommonNameChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = CommonNameChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"CommonName");
+        }
         
         private const string DEF_COMMONNAME = @"localhost";
         
@@ -382,6 +736,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _commonName = value;
+                this.OnCommonNameChanged();
             }
         }
         
@@ -390,6 +745,19 @@ namespace Mastersign.Gate
         #region Property ValidDays
         
         private int _validDays;
+        
+        public event EventHandler ValidDaysChanged;
+        
+        protected virtual void OnValidDaysChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = ValidDaysChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"ValidDays");
+        }
         
         private const int DEF_VALIDDAYS = 365;
         
@@ -404,6 +772,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _validDays = value;
+                this.OnValidDaysChanged();
             }
         }
         
@@ -412,6 +781,19 @@ namespace Mastersign.Gate
         #region Property Bits
         
         private int _bits;
+        
+        public event EventHandler BitsChanged;
+        
+        protected virtual void OnBitsChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = BitsChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Bits");
+        }
         
         private const int DEF_BITS = 4096;
         
@@ -426,13 +808,14 @@ namespace Mastersign.Gate
                     return;
                 }
                 _bits = value;
+                this.OnBitsChanged();
             }
         }
         
         #endregion
     }
     
-    public partial class Service
+    public partial class Service : INotifyPropertyChanged, IChangeTracking
     {
         public Service()
         {
@@ -440,11 +823,63 @@ namespace Mastersign.Gate
             this._route = DEF_ROUTE;
             this._url = DEF_URL;
             this._headerXForwardedFor = DEF_HEADERXFORWARDEDFOR;
+            
+            this.IsChanged = false;
         }
+        
+        #region Change Tracking
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+        
+        private bool _isChanged = false;
+        
+        [Browsable(false)]
+        public bool IsChanged
+        {
+            get { return this._isChanged; }
+            protected set
+            {
+                if ((this._isChanged == value))
+                {
+                    return;
+                }
+                this._isChanged = value;
+                this.OnPropertyChanged(@"IsChanged");
+            }
+        }
+        
+        public virtual void AcceptChanges()
+        {
+            this.IsChanged = false;
+        }
+        
+        #endregion
         
         #region Property Name
         
         private string _name;
+        
+        public event EventHandler NameChanged;
+        
+        protected virtual void OnNameChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = NameChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Name");
+        }
         
         private const string DEF_NAME = @"service";
         
@@ -459,6 +894,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _name = value;
+                this.OnNameChanged();
             }
         }
         
@@ -467,6 +903,19 @@ namespace Mastersign.Gate
         #region Property Route
         
         private string _route;
+        
+        public event EventHandler RouteChanged;
+        
+        protected virtual void OnRouteChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = RouteChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Route");
+        }
         
         private const string DEF_ROUTE = @"/service/";
         
@@ -481,6 +930,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _route = value;
+                this.OnRouteChanged();
             }
         }
         
@@ -489,6 +939,19 @@ namespace Mastersign.Gate
         #region Property Url
         
         private string _url;
+        
+        public event EventHandler UrlChanged;
+        
+        protected virtual void OnUrlChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = UrlChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Url");
+        }
         
         private const string DEF_URL = @"http://127.0.0.1:8080/";
         
@@ -503,6 +966,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _url = value;
+                this.OnUrlChanged();
             }
         }
         
@@ -511,6 +975,19 @@ namespace Mastersign.Gate
         #region Property SupportWebSockets
         
         private bool _supportWebSockets;
+        
+        public event EventHandler SupportWebSocketsChanged;
+        
+        protected virtual void OnSupportWebSocketsChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = SupportWebSocketsChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"SupportWebSockets");
+        }
         
         public virtual bool SupportWebSockets
         {
@@ -522,6 +999,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _supportWebSockets = value;
+                this.OnSupportWebSocketsChanged();
             }
         }
         
@@ -530,6 +1008,19 @@ namespace Mastersign.Gate
         #region Property UrlRewrite
         
         private bool _urlRewrite;
+        
+        public event EventHandler UrlRewriteChanged;
+        
+        protected virtual void OnUrlRewriteChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = UrlRewriteChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"UrlRewrite");
+        }
         
         public virtual bool UrlRewrite
         {
@@ -541,6 +1032,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _urlRewrite = value;
+                this.OnUrlRewriteChanged();
             }
         }
         
@@ -549,6 +1041,19 @@ namespace Mastersign.Gate
         #region Property HtmlContentRewrite
         
         private bool _htmlContentRewrite;
+        
+        public event EventHandler HtmlContentRewriteChanged;
+        
+        protected virtual void OnHtmlContentRewriteChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = HtmlContentRewriteChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"HtmlContentRewrite");
+        }
         
         public virtual bool HtmlContentRewrite
         {
@@ -560,6 +1065,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _htmlContentRewrite = value;
+                this.OnHtmlContentRewriteChanged();
             }
         }
         
@@ -568,6 +1074,19 @@ namespace Mastersign.Gate
         #region Property CssContentRewrite
         
         private bool _cssContentRewrite;
+        
+        public event EventHandler CssContentRewriteChanged;
+        
+        protected virtual void OnCssContentRewriteChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = CssContentRewriteChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"CssContentRewrite");
+        }
         
         public virtual bool CssContentRewrite
         {
@@ -579,6 +1098,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _cssContentRewrite = value;
+                this.OnCssContentRewriteChanged();
             }
         }
         
@@ -587,6 +1107,19 @@ namespace Mastersign.Gate
         #region Property JavaScriptContentRewrite
         
         private bool _javaScriptContentRewrite;
+        
+        public event EventHandler JavaScriptContentRewriteChanged;
+        
+        protected virtual void OnJavaScriptContentRewriteChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = JavaScriptContentRewriteChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"JavaScriptContentRewrite");
+        }
         
         public virtual bool JavaScriptContentRewrite
         {
@@ -598,6 +1131,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _javaScriptContentRewrite = value;
+                this.OnJavaScriptContentRewriteChanged();
             }
         }
         
@@ -606,6 +1140,19 @@ namespace Mastersign.Gate
         #region Property HeaderXForwardedFor
         
         private bool _headerXForwardedFor;
+        
+        public event EventHandler HeaderXForwardedForChanged;
+        
+        protected virtual void OnHeaderXForwardedForChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = HeaderXForwardedForChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"HeaderXForwardedFor");
+        }
         
         private const bool DEF_HEADERXFORWARDEDFOR = true;
         
@@ -620,6 +1167,7 @@ namespace Mastersign.Gate
                     return;
                 }
                 _headerXForwardedFor = value;
+                this.OnHeaderXForwardedForChanged();
             }
         }
         

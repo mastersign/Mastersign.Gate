@@ -7,6 +7,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeSetup}}">
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:GateCommands.ServiceNew" CanExecute="ServiceNew_CanExecute" Executed="ServiceNew_Executed" />
+        <CommandBinding Command="local:GateCommands.ServiceMoveUp" CanExecute="ServiceMoveUp_CanExecute" Executed="ServiceMoveUp_Executed" />
+        <CommandBinding Command="local:GateCommands.ServiceMoveDown" CanExecute="ServiceMoveDown_CanExecute" Executed="ServiceMoveDown_Executed" />
+        <CommandBinding Command="local:GateCommands.ServiceDelete" CanExecute="ServiceDelete_CanExecute" Executed="ServiceDelete_Executed" />
+    </UserControl.CommandBindings>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -31,7 +37,8 @@
                  Text="{Binding Directory}"/>
         <Button x:Name="btnDirectoryBrowse" Grid.Row="0" Grid.Column="2" Margin="0,0,0,6"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8,0,8,0"
-                Content="..."/>
+                Content="..."
+                Click="BtnDirectoryBrowse_Click"/>
         <Label x:Name="lblLogDirectory" Grid.Row="1" Grid.Column="0"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
                Content="Log Directory"/>
@@ -40,7 +47,8 @@
                  Text="{Binding LogDirectory}"/>
         <Button x:Name="btnLogDirectoryBrowse" Grid.Row="1" Grid.Column="2" Margin="0,0,0,6"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8,0,8,0"
-                Content="..."/>
+                Content="..."
+                Click="BtnLogDirectoryBrowse_Click"/>
         <Label x:Name="lblCertificateDirectory" Grid.Row="2" Grid.Column="0"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
                Content="Certificate Directory"/>
@@ -49,7 +57,8 @@
                  Text="{Binding CertificateDirectory}"/>
         <Button x:Name="btnCertificateDirectoryBrowse" Grid.Row="2" Grid.Column="2" Margin="0,0,0,6"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8,0,8,0"
-                Content="..."/>
+                Content="..."
+                Click="BtnCertificateDirectoryBrowse_Click"/>
 
         <Label x:Name="lblServer" Grid.Row="3" Grid.Column="0"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
@@ -61,9 +70,9 @@
         <Label x:Name="lblServices" Grid.Row="4" Grid.Column="0"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
                Content="Services" FontWeight="Bold"/>
-        <Button x:Name="btnAssService" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+        <Button x:Name="btnAddService" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
                 HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,6"
-                Content="Add Service" />
+                Content="Add Service" Command="local:GateCommands.ServiceNew" />
         <ItemsControl x:Name="itemsServices" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
                       HorizontalAlignment="Stretch" VerticalAlignment="Top"
                       ItemsSource="{Binding Server.Services}">
@@ -82,9 +91,12 @@
                         <StackPanel Grid.Row="0"
                                     HorizontalAlignment="Right"
                                     Orientation="Horizontal">
-                            <Button Content="Up" Margin="0,0,10,6"/>
-                            <Button Content="Down" Margin="0,0,10,6"/>
-                            <Button Content="Delete" Margin="0,0,0,6"/>
+                            <Button Content="Up" Margin="0,0,10,6"
+                                    Command="local:GateCommands.ServiceMoveUp" CommandParameter="{Binding Mode=OneWay}"/>
+                            <Button Content="Down" Margin="0,0,10,6"
+                                    Command="local:GateCommands.ServiceMoveDown" CommandParameter="{Binding Mode=OneWay}"/>
+                            <Button Content="Delete" Margin="0,0,0,6"
+                                    Command="local:GateCommands.ServiceDelete" CommandParameter="{Binding Mode=OneWay}"/>
                         </StackPanel>
                         <local:ServiceControl Grid.Row="1" />
                     </Grid>

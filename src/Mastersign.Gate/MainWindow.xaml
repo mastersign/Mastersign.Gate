@@ -10,10 +10,10 @@
         Title="Mastersign Gate" Height="600" Width="800"
         ShowIconOnTitleBar="True" TitleCharacterCasing="Normal">
     <Grid>
-        <Controls:MetroAnimatedSingleRowTabControl Margin="0,16,0,16">
+        <Controls:MetroAnimatedSingleRowTabControl Margin="16,16,0,16">
             <TabItem Header="Configuration">
                 <ScrollViewer Margin="0,8,0,0">
-                    <local:SetupControl Margin="10" />
+                    <local:SetupControl Margin="0,10,16,10" />
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Execution">

@@ -3,7 +3,8 @@
        xmlns="http://scaleton.mastersign.de/2014/model"
        xsi:schemaLocation="http://scaleton.mastersign.de/2014/model http://scaleton.mastersign.de/Scaleton_Model_2014.xsd">
 
-  <Configuration modelType="Plain">
+  <Configuration modelType="ChangeTracking">
+    <ChangeTrackingConfiguration level="Tracking"/>
   </Configuration>
 
   <Types>
