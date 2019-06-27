@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace Mastersign.Gate
 {
+
+    public class DesignTimeCore : Core
+    {
+        public DesignTimeCore()
+        {
+            Setup = new DesignTimeSetup();
+        }
+    }
     public class DesignTimeSetup : Setup
     {
         public DesignTimeSetup()

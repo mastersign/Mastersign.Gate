@@ -9,7 +9,23 @@
 
   <Types>
 
+    <Class name="Core">
+      <CustomInitializer>Initialize</CustomInitializer>
+      <Property name="ProjectFile" />
+      <Property name="ResourceDirectory">
+        <DefaultValue>res</DefaultValue>
+      </Property>
+      <Property name="BinaryDirectory">
+        <DefaultValue>lib</DefaultValue>
+      </Property>
+      <Property name="Setup" type="Setup" />
+    </Class>
+
     <Class name="Setup">
+      <CustomInitializer>Initialize</CustomInitializer>
+      <Property name="Name">
+        <DefaultValue>Unknown</DefaultValue>
+      </Property>
       <Property name="Directory" />
       <Property name="CertificateDirectory">
         <DefaultValue>certs</DefaultValue>

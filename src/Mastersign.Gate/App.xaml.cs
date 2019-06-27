@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MahApps.Metro;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -13,5 +14,16 @@ namespace Mastersign.Gate
     /// </summary>
     public partial class App : Application
     {
+        public Core Core { get; private set; }
+
+        private void Application_Startup(object sender, StartupEventArgs e)
+        {
+            ShutdownMode = ShutdownMode.OnMainWindowClose;
+
+            ThemeManager.IsAutomaticWindowsAppModeSettingSyncEnabled = true;
+
+            Core = new Core();
+            // e.Args
+        }
     }
 }

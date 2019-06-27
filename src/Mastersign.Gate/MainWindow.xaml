@@ -5,16 +5,66 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:Mastersign.Gate"
-        d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeSetup}}"
+        d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeCore}}"
         mc:Ignorable="d"
-        Title="Mastersign Gate" Height="600" Width="800"
+        Title="{Binding WindowTitle}" Height="600" Width="700"
         ShowIconOnTitleBar="True" TitleCharacterCasing="Normal">
+    <Window.CommandBindings>
+        <CommandBinding Command="local:GateCommands.ProjectFileOpen" CanExecute="ProjectFileOpen_CanExecute" Executed="ProjectFileOpen_Executed" />
+        <CommandBinding Command="local:GateCommands.ProjectFileSave" CanExecute="ProjectFileSave_CanExecute" Executed="ProjectFileSave_Executed" />
+    </Window.CommandBindings>
     <Grid>
         <Controls:MetroAnimatedSingleRowTabControl Margin="16,16,0,16">
+            <TabItem Header="Backstage">
+
+            </TabItem>
             <TabItem Header="Configuration">
-                <ScrollViewer Margin="0,8,0,0">
-                    <local:SetupControl Margin="0,10,16,10" />
-                </ScrollViewer>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <Grid Margin="0,10,16,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal" FlowDirection="RightToLeft">
+                            <Button Margin="0,0,10,10" Padding="16,8,16,10"
+                                    Style="{StaticResource SquareButtonStyle}"
+                                    Command="local:GateCommands.ProjectFileSave"
+                                    Content="Save Project" />
+                            <Button Margin="0,0,10,10" Padding="16,8,16,10"
+                                    Style="{StaticResource AccentedSquareButtonStyle}"
+                                    Command="local:GateCommands.ProjectFileSave"
+                                    Content="Open Project"/>
+                        </StackPanel>
+                        
+                        <Label Grid.Row="1" Content="Project File" Margin="0,0,10,6" />
+                        <TextBox Grid.Row="1" Grid.Column="1"
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                 IsReadOnly="True"
+                                 Text="{Binding ProjectFile}"/>
+                        <!--<Button Grid.Row="1" Grid.Column="2" Padding="8,0,8,0"
+                                HorizontalAlignment="Right" VerticalAlignment="Top"
+                                Content="..."/>-->
+                        
+                        <Label Content="Project Name" Grid.Row="2" Margin="0,0,10,6" />
+                        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                 Text="{Binding Setup.Name}"/>
+                    </Grid>
+                    <ScrollViewer Grid.Row="1" Margin="0,8,0,0">
+                        <local:SetupControl Margin="0,10,16,10"
+                                            DataContext="{Binding Setup}"/>
+                    </ScrollViewer>
+                </Grid>
             </TabItem>
             <TabItem Header="Execution">
                 

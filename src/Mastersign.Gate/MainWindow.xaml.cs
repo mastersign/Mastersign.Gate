@@ -21,11 +21,32 @@ namespace Mastersign.Gate
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+        private Core Core => ((App)Application.Current).Core;
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = Core;
+        }
 
-            this.DataContext = new DesignTimeSetup();
+        public void ProjectFileOpen_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        public void ProjectFileOpen_Executed(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ProjectFileSave_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        public void ProjectFileSave_Executed(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
     }
 }

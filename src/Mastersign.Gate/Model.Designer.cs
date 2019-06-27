@@ -9,12 +9,13 @@ namespace Mastersign.Gate
     
     // Scaleton Version: 0.3.0
     
-    public partial class Setup : INotifyPropertyChanged, IChangeTracking
+    public partial class Core : INotifyPropertyChanged, IChangeTracking
     {
-        public Setup()
+        public Core()
         {
-            this._certificateDirectory = DEF_CERTIFICATEDIRECTORY;
-            this._logDirectory = DEF_LOGDIRECTORY;
+            this._resourceDirectory = DEF_RESOURCEDIRECTORY;
+            this._binaryDirectory = DEF_BINARYDIRECTORY;
+            this.Initialize();
             
             this.IsChanged = false;
         }
@@ -52,6 +53,230 @@ namespace Mastersign.Gate
         public virtual void AcceptChanges()
         {
             this.IsChanged = false;
+        }
+        
+        #endregion
+        
+        #region Property ProjectFile
+        
+        private string _projectFile;
+        
+        public event EventHandler ProjectFileChanged;
+        
+        protected virtual void OnProjectFileChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = ProjectFileChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"ProjectFile");
+        }
+        
+        public virtual string ProjectFile
+        {
+            get { return _projectFile; }
+            set
+            {
+                if (string.Equals(value, _projectFile))
+                {
+                    return;
+                }
+                _projectFile = value;
+                this.OnProjectFileChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property ResourceDirectory
+        
+        private string _resourceDirectory;
+        
+        public event EventHandler ResourceDirectoryChanged;
+        
+        protected virtual void OnResourceDirectoryChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = ResourceDirectoryChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"ResourceDirectory");
+        }
+        
+        private const string DEF_RESOURCEDIRECTORY = @"res";
+        
+        [DefaultValue(DEF_RESOURCEDIRECTORY)]
+        public virtual string ResourceDirectory
+        {
+            get { return _resourceDirectory; }
+            set
+            {
+                if (string.Equals(value, _resourceDirectory))
+                {
+                    return;
+                }
+                _resourceDirectory = value;
+                this.OnResourceDirectoryChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property BinaryDirectory
+        
+        private string _binaryDirectory;
+        
+        public event EventHandler BinaryDirectoryChanged;
+        
+        protected virtual void OnBinaryDirectoryChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = BinaryDirectoryChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"BinaryDirectory");
+        }
+        
+        private const string DEF_BINARYDIRECTORY = @"lib";
+        
+        [DefaultValue(DEF_BINARYDIRECTORY)]
+        public virtual string BinaryDirectory
+        {
+            get { return _binaryDirectory; }
+            set
+            {
+                if (string.Equals(value, _binaryDirectory))
+                {
+                    return;
+                }
+                _binaryDirectory = value;
+                this.OnBinaryDirectoryChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property Setup
+        
+        private Setup _setup;
+        
+        public event EventHandler SetupChanged;
+        
+        protected virtual void OnSetupChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = SetupChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Setup");
+        }
+        
+        public virtual Setup Setup
+        {
+            get { return _setup; }
+            set
+            {
+                if ((value == _setup))
+                {
+                    return;
+                }
+                _setup = value;
+                this.OnSetupChanged();
+            }
+        }
+        
+        #endregion
+    }
+    
+    public partial class Setup : INotifyPropertyChanged, IChangeTracking
+    {
+        public Setup()
+        {
+            this._name = DEF_NAME;
+            this._certificateDirectory = DEF_CERTIFICATEDIRECTORY;
+            this._logDirectory = DEF_LOGDIRECTORY;
+            this.Initialize();
+            
+            this.IsChanged = false;
+        }
+        
+        #region Change Tracking
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+        
+        protected virtual void OnPropertyChanged(string name)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+        
+        private bool _isChanged = false;
+        
+        [Browsable(false)]
+        public bool IsChanged
+        {
+            get { return this._isChanged; }
+            protected set
+            {
+                if ((this._isChanged == value))
+                {
+                    return;
+                }
+                this._isChanged = value;
+                this.OnPropertyChanged(@"IsChanged");
+            }
+        }
+        
+        public virtual void AcceptChanges()
+        {
+            this.IsChanged = false;
+        }
+        
+        #endregion
+        
+        #region Property Name
+        
+        private string _name;
+        
+        public event EventHandler NameChanged;
+        
+        protected virtual void OnNameChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = NameChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Name");
+        }
+        
+        private const string DEF_NAME = @"Unknown";
+        
+        [DefaultValue(DEF_NAME)]
+        public virtual string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (string.Equals(value, _name))
+                {
+                    return;
+                }
+                _name = value;
+                this.OnNameChanged();
+            }
         }
         
         #endregion

@@ -82,6 +82,7 @@
       <DependentUpon>CertificateControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Commands.cs" />
+    <Compile Include="Core.cs" />
     <Compile Include="DesignTime.cs" />
     <Compile Include="ServerControl.xaml.cs">
       <DependentUpon>ServerControl.xaml</DependentUpon>
@@ -89,6 +90,7 @@
     <Compile Include="ServiceControl.xaml.cs">
       <DependentUpon>ServiceControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Setup.cs" />
     <Compile Include="SetupControl.xaml.cs">
       <DependentUpon>SetupControl.xaml</DependentUpon>
     </Compile>

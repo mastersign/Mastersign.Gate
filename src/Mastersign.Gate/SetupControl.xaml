@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:local="clr-namespace:Mastersign.Gate"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
@@ -34,9 +35,11 @@
                Content="Config Directory"/>
         <TextBox x:Name="txtDirectory" Grid.Row="0" Grid.Column="1"
                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                 Controls:TextBoxHelper.Watermark="Current Working Directory"
                  Text="{Binding Directory}"/>
         <Button x:Name="btnDirectoryBrowse" Grid.Row="0" Grid.Column="2" Margin="0,0,0,6"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8,0,8,0"
+                HorizontalAlignment="Right" VerticalAlignment="Stretch" Padding="8,0,8,0"
+                Style="{StaticResource SquareButtonStyle}"
                 Content="..."
                 Click="BtnDirectoryBrowse_Click"/>
         <Label x:Name="lblLogDirectory" Grid.Row="1" Grid.Column="0"
@@ -44,9 +47,11 @@
                Content="Log Directory"/>
         <TextBox x:Name="txtLogDirectory" Grid.Row="1" Grid.Column="1"
                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                 Controls:TextBoxHelper.Watermark="Same as Config Directory"
                  Text="{Binding LogDirectory}"/>
         <Button x:Name="btnLogDirectoryBrowse" Grid.Row="1" Grid.Column="2" Margin="0,0,0,6"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8,0,8,0"
+                HorizontalAlignment="Right" VerticalAlignment="Stretch" Padding="8,0,8,0"
+                Style="{StaticResource SquareButtonStyle}"
                 Content="..."
                 Click="BtnLogDirectoryBrowse_Click"/>
         <Label x:Name="lblCertificateDirectory" Grid.Row="2" Grid.Column="0"
@@ -54,9 +59,11 @@
                Content="Certificate Directory"/>
         <TextBox x:Name="txtCertificateDirectory" Grid.Row="2" Grid.Column="1"
                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                 Controls:TextBoxHelper.Watermark="Same as Config Directory"
                  Text="{Binding CertificateDirectory}"/>
         <Button x:Name="btnCertificateDirectoryBrowse" Grid.Row="2" Grid.Column="2" Margin="0,0,0,6"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Padding="8,0,8,0"
+                HorizontalAlignment="Right" VerticalAlignment="Stretch" Padding="8,0,8,0"
+                Style="{StaticResource SquareButtonStyle}"
                 Content="..."
                 Click="BtnCertificateDirectoryBrowse_Click"/>
 
@@ -71,7 +78,8 @@
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
                Content="Services" FontWeight="Bold"/>
         <Button x:Name="btnAddService" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,6"
+                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,6" Padding="12,6,12,8"
+                Style="{StaticResource AccentedSquareButtonStyle}"
                 Content="Add Service" Command="local:GateCommands.ServiceNew" />
         <ItemsControl x:Name="itemsServices" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
                       HorizontalAlignment="Stretch" VerticalAlignment="Top"
@@ -91,11 +99,14 @@
                         <StackPanel Grid.Row="0"
                                     HorizontalAlignment="Right"
                                     Orientation="Horizontal">
-                            <Button Content="Up" Margin="0,0,10,6"
+                            <Button Content="Up" Margin="0,0,10,6" Padding="12,6,12,8"
+                                    Style="{StaticResource SquareButtonStyle}"
                                     Command="local:GateCommands.ServiceMoveUp" CommandParameter="{Binding Mode=OneWay}"/>
-                            <Button Content="Down" Margin="0,0,10,6"
+                            <Button Content="Down" Margin="0,0,10,6" Padding="12,6,12,8"
+                                    Style="{StaticResource SquareButtonStyle}"
                                     Command="local:GateCommands.ServiceMoveDown" CommandParameter="{Binding Mode=OneWay}"/>
-                            <Button Content="Delete" Margin="0,0,0,6"
+                            <Button Content="Delete" Margin="0,0,0,6" Padding="12,6,12,8"
+                                    Style="{StaticResource SquareButtonStyle}"
                                     Command="local:GateCommands.ServiceDelete" CommandParameter="{Binding Mode=OneWay}"/>
                         </StackPanel>
                         <local:ServiceControl Grid.Row="1" />
