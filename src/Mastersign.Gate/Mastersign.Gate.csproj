@@ -41,6 +41,9 @@
     <Reference Include="ControlzEx, Version=4.0.0.0, Culture=neutral, PublicKeyToken=69f1c32f803d307e, processorArchitecture=MSIL">
       <HintPath>..\packages\ControlzEx.4.0.0-alpha0303\lib\net45\ControlzEx.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack, Version=1.11.8.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.8\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro, Version=2.0.0.0, Culture=neutral, PublicKeyToken=51482d6f650b2b3f, processorArchitecture=MSIL">
       <HintPath>..\packages\MahApps.Metro.2.0.0-alpha0391\lib\net46\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -85,6 +88,7 @@
     <Compile Include="Core.cs" />
     <Compile Include="DesignTime.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="NginxManager.cs" />
     <Compile Include="ProjectFile.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="ServerControl.xaml.cs">
@@ -99,6 +103,11 @@
     </Compile>
     <Compile Include="SetupControl.xaml.cs">
       <DependentUpon>SetupControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="StateModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StateModel.xml</DependentUpon>
     </Compile>
     <Compile Include="WindowExtensions.cs" />
     <Page Include="CertificateControl.xaml">
@@ -170,6 +179,12 @@
     <Resource Include="Model.xml">
       <Generator>Scaleton Code Generator</Generator>
       <LastGenOutput>Model.Designer.cs</LastGenOutput>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="StateModel.xml">
+      <Generator>Scaleton Code Generator</Generator>
+      <LastGenOutput>StateModel.Designer.cs</LastGenOutput>
     </Resource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Model xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://scaleton.mastersign.de/2014/model"
+       xsi:schemaLocation="http://scaleton.mastersign.de/2014/model http://scaleton.mastersign.de/Scaleton_Model_2014.xsd">
+
+  <Configuration modelType="ChangeTracking">
+    <ChangeTrackingConfiguration level="Notification"/>
+    <OverrideToString value="true" />
+  </Configuration>
+
+  <Types>
+    
+    <Class name="NginxMonitorState">
+      <Property name="CheckingSystemExecutable" type="bool" />
+      <Property name="FoundSystemExecutable" type="bool" />
+      <Property name="SystemPath" />
+      <Property name="SystemVersion" />
+      
+      <Property name="CheckingOnlineExecutable" type="bool" />
+      <Property name="FoundOnlineExecutable" type="bool" />
+      <Property name="OnlineVersion" />
+      <Property name="OnlineExecutableUrl" />
+
+      <Property name="DownloadingOnlineExecutable" type="bool" />
+      <Property name="ExtractingOnlineExecutable" type="bool" />
+      
+      <Property name="CheckingInternalExecutable" type="bool" />
+      <Property name="FoundInternalExecutable" type="bool" />
+      <Property name="InternalVersion" />
+    </Class>
+    
+  </Types>
+</Model>

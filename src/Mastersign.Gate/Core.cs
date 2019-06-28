@@ -15,7 +15,23 @@ namespace Mastersign.Gate
         {
             SetupChanged += Core_SetupChanged;
             Setup = new Setup();
+            NginxManager = new NginxManager(this);
         }
+
+        public string ProgrammDirectory
+            => System.IO.Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+
+        public string AbsoluteResourceDirectory
+            => System.IO.Path.IsPathRooted(ResourceDirectory)
+                ? ResourceDirectory
+                : System.IO.Path.Combine(ProgrammDirectory, ResourceDirectory);
+
+        public string AbsoluteBinaryDirectory
+            => System.IO.Path.IsPathRooted(BinaryDirectory)
+                ? BinaryDirectory
+                : System.IO.Path.Combine(ProgrammDirectory, BinaryDirectory);
+
+        public NginxManager NginxManager { get; private set; }
 
         #region Setup Observation
 

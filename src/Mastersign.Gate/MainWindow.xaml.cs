@@ -96,5 +96,14 @@ namespace Mastersign.Gate
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private async void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Core.NginxManager.FindSystemExecutable();
+            Core.NginxManager.FindInternalExecutable();
+            await Core.NginxManager.FindOnlineExecutable();
+            await Core.NginxManager.DownloadOnlineExecutable();
+            Core.NginxManager.ExtractOnlineExecutable();
+        }
     }
 }
