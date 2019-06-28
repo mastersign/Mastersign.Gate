@@ -5,13 +5,14 @@
 
   <Configuration modelType="ChangeTracking">
     <ChangeTrackingConfiguration level="Tracking"/>
+    <IsXmlSerializable value="true"/>
   </Configuration>
 
   <Types>
 
     <Class name="Core">
       <CustomInitializer>Initialize</CustomInitializer>
-      <Property name="ProjectFile" />
+      <Property name="ProjectFilePath" />
       <Property name="ResourceDirectory">
         <DefaultValue>res</DefaultValue>
       </Property>
@@ -23,6 +24,7 @@
 
     <Class name="Setup">
       <CustomInitializer>Initialize</CustomInitializer>
+      <Property name="Version" />
       <Property name="Name">
         <DefaultValue>Unknown</DefaultValue>
       </Property>
@@ -37,6 +39,7 @@
     </Class>
 
     <Class name="Server">
+      <CustomInitializer>Initialize</CustomInitializer>
       <Property name="Host">
         <DefaultValue>0.0.0.0</DefaultValue>
       </Property>

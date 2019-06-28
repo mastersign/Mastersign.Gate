@@ -81,9 +81,12 @@
     <Compile Include="CertificateControl.xaml.cs">
       <DependentUpon>CertificateControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Commands.cs" />
+    <Compile Include="GateCommands.cs" />
     <Compile Include="Core.cs" />
     <Compile Include="DesignTime.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="ProjectFile.cs" />
+    <Compile Include="Server.cs" />
     <Compile Include="ServerControl.xaml.cs">
       <DependentUpon>ServerControl.xaml</DependentUpon>
     </Compile>
@@ -91,6 +94,9 @@
       <DependentUpon>ServiceControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Setup.cs" />
+    <Compile Include="SetupServicesControl.xaml.cs">
+      <DependentUpon>SetupServicesControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SetupControl.xaml.cs">
       <DependentUpon>SetupControl.xaml</DependentUpon>
     </Compile>
@@ -118,6 +124,10 @@
     <Page Include="ServiceControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SetupServicesControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="SetupControl.xaml">
       <SubType>Designer</SubType>

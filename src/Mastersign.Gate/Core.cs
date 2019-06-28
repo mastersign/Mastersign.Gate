@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace Mastersign.Gate
 {
@@ -22,22 +24,38 @@ namespace Mastersign.Gate
         private void Core_SetupChanged(object sender, EventArgs e)
         {
             if (ObservedSetup != null)
-                ObservedSetup.NameChanged -= ObservedSetup_NameChanged;
+                ObservedSetup.PropertyChanged -= ObservedSetup_Changed;
             ObservedSetup = Setup;
             if (ObservedSetup != null)
-                ObservedSetup.NameChanged += ObservedSetup_NameChanged;
+                ObservedSetup.PropertyChanged += ObservedSetup_Changed;
             OnWindowTitleChanged();
         }
 
-        private void ObservedSetup_NameChanged(object sender, EventArgs e) => OnWindowTitleChanged();
+        private void ObservedSetup_Changed(object sender, EventArgs e) => OnWindowTitleChanged();
 
         #endregion
 
         #region WindowTitle
 
-        public string WindowTitle => string.IsNullOrWhiteSpace(Setup?.Name)
-            ? "Mastersign Gate"
-            : "Mastersign Gate - " + Setup.Name;
+        public string WindowTitle
+        {
+            get
+            {
+                var title = "Mastersign Gate";
+                if (Setup != null)
+                {
+                    if (!string.IsNullOrWhiteSpace(Setup?.Name))
+                    {
+                        title += " - " + Setup.Name;
+                    }
+                    if (Setup.IsChanged)
+                    {
+                        title += " (changed)";
+                    }
+                }
+                return title;
+            }
+        }
 
         public event EventHandler WindowTitleChanged;
 
@@ -45,6 +63,33 @@ namespace Mastersign.Gate
         {
             WindowTitleChanged?.Invoke(this, EventArgs.Empty);
             OnPropertyChanged(nameof(WindowTitle));
+        }
+
+        #endregion
+
+        #region Project File Handling
+
+        public bool IsProjectFileChanged => Setup != null && Setup.IsChanged;
+
+        public void NewProjectFile()
+        {
+            Setup = new Setup();
+            ProjectFilePath = null;
+        }
+
+        public void OpenProjectFile(string path)
+        {
+            Setup = new ProjectFile<Setup>(path).Load();
+            Setup.Version = ProjectFile<Setup>.CURRENT_VERSION;
+            Setup.AcceptChanges();
+            ProjectFilePath = path;
+        }
+
+        public void SaveProjectFile()
+        {
+            if (Setup == null) return;
+            new ProjectFile<Setup>(ProjectFilePath).Save(Setup);
+            Setup.AcceptChanges();
         }
 
         #endregion

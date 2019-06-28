@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.Serialization;
+using System.Xml.Serialization;
 using System.Globalization;
 
 namespace Mastersign.Gate
@@ -36,6 +38,7 @@ namespace Mastersign.Gate
         private bool _isChanged = false;
         
         [Browsable(false)]
+        [XmlIgnore]
         public bool IsChanged
         {
             get { return this._isChanged; }
@@ -57,34 +60,34 @@ namespace Mastersign.Gate
         
         #endregion
         
-        #region Property ProjectFile
+        #region Property ProjectFilePath
         
-        private string _projectFile;
+        private string _projectFilePath;
         
-        public event EventHandler ProjectFileChanged;
+        public event EventHandler ProjectFilePathChanged;
         
-        protected virtual void OnProjectFileChanged()
+        protected virtual void OnProjectFilePathChanged()
         {
             this.IsChanged = true;
-            EventHandler handler = ProjectFileChanged;
+            EventHandler handler = ProjectFilePathChanged;
             if (!ReferenceEquals(handler, null))
             {
                 handler(this, EventArgs.Empty);
             }
-            this.OnPropertyChanged(@"ProjectFile");
+            this.OnPropertyChanged(@"ProjectFilePath");
         }
         
-        public virtual string ProjectFile
+        public virtual string ProjectFilePath
         {
-            get { return _projectFile; }
+            get { return _projectFilePath; }
             set
             {
-                if (string.Equals(value, _projectFile))
+                if (string.Equals(value, _projectFilePath))
                 {
                     return;
                 }
-                _projectFile = value;
-                this.OnProjectFileChanged();
+                _projectFilePath = value;
+                this.OnProjectFilePathChanged();
             }
         }
         
@@ -224,6 +227,7 @@ namespace Mastersign.Gate
         private bool _isChanged = false;
         
         [Browsable(false)]
+        [XmlIgnore]
         public bool IsChanged
         {
             get { return this._isChanged; }
@@ -241,6 +245,39 @@ namespace Mastersign.Gate
         public virtual void AcceptChanges()
         {
             this.IsChanged = false;
+        }
+        
+        #endregion
+        
+        #region Property Version
+        
+        private string _version;
+        
+        public event EventHandler VersionChanged;
+        
+        protected virtual void OnVersionChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = VersionChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"Version");
+        }
+        
+        public virtual string Version
+        {
+            get { return _version; }
+            set
+            {
+                if (string.Equals(value, _version))
+                {
+                    return;
+                }
+                _version = value;
+                this.OnVersionChanged();
+            }
         }
         
         #endregion
@@ -430,6 +467,7 @@ namespace Mastersign.Gate
             this._useHttp = DEF_USEHTTP;
             this._useHttps = DEF_USEHTTPS;
             this._services = new global::System.Collections.ObjectModel.ObservableCollection<Service>();
+            this.Initialize();
             
             this.IsChanged = false;
         }
@@ -450,6 +488,7 @@ namespace Mastersign.Gate
         private bool _isChanged = false;
         
         [Browsable(false)]
+        [XmlIgnore]
         public bool IsChanged
         {
             get { return this._isChanged; }
@@ -745,6 +784,7 @@ namespace Mastersign.Gate
         private bool _isChanged = false;
         
         [Browsable(false)]
+        [XmlIgnore]
         public bool IsChanged
         {
             get { return this._isChanged; }
@@ -1068,6 +1108,7 @@ namespace Mastersign.Gate
         private bool _isChanged = false;
         
         [Browsable(false)]
+        [XmlIgnore]
         public bool IsChanged
         {
             get { return this._isChanged; }

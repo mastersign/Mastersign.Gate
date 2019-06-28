@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace Mastersign.Gate
 {
-    partial class Setup
+    class NginxManager
     {
-        private void Initialize()
+        public Core Core { get; }
+
+        public NginxManager(Core core)
         {
-            Version = ProjectFile<Setup>.CURRENT_VERSION;
-            Server = new Server();
+            Core = core;
         }
+
+
     }
 }

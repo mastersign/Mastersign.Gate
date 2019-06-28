@@ -7,7 +7,7 @@
              xmlns:local="clr-namespace:Mastersign.Gate"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeSetup}}">
+             d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeCore}}">
     <UserControl.CommandBindings>
         <CommandBinding Command="local:GateCommands.ServiceNew" CanExecute="ServiceNew_CanExecute" Executed="ServiceNew_Executed" />
         <CommandBinding Command="local:GateCommands.ServiceMoveUp" CanExecute="ServiceMoveUp_CanExecute" Executed="ServiceMoveUp_Executed" />
@@ -30,90 +30,66 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="lblDirectory" Grid.Row="0" Grid.Column="0"
+        <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal" FlowDirection="RightToLeft">
+            <Button Margin="0,0,10,10" Padding="16,8,16,10"
+                                    Style="{StaticResource SquareButtonStyle}"
+                                    Command="local:GateCommands.ProjectFileSave"
+                                    Content="Save Project" />
+            <Button Margin="0,0,10,10" Padding="16,8,16,10"
+                                    Style="{StaticResource AccentedSquareButtonStyle}"
+                                    Command="local:GateCommands.ProjectFileOpen"
+                                    Content="Open Project"/>
+            <Button Margin="0,0,10,10" Padding="16,8,16,10"
+                                    Style="{StaticResource SquareButtonStyle}"
+                                    Command="local:GateCommands.ProjectFileNew"
+                                    Content="New Project" />
+        </StackPanel>
+
+        <Label Grid.Row="1" Content="Project File" Margin="0,0,10,6" />
+        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                 Content="{Binding ProjectFile}"/>
+
+        <Label Content="Project Name" Grid.Row="2" Margin="0,0,10,6" />
+        <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+                                 HorizontalAlignment="Stretch" VerticalAlignment="Top"
+                                 Text="{Binding Setup.Name}"/>
+
+        <Label x:Name="lblDirectory" Grid.Row="3" Grid.Column="0"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
                Content="Config Directory"/>
-        <TextBox x:Name="txtDirectory" Grid.Row="0" Grid.Column="1"
+        <TextBox x:Name="txtDirectory" Grid.Row="3" Grid.Column="1"
                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
                  Controls:TextBoxHelper.Watermark="Current Working Directory"
-                 Text="{Binding Directory}"/>
-        <Button x:Name="btnDirectoryBrowse" Grid.Row="0" Grid.Column="2" Margin="0,0,0,6"
+                 Text="{Binding Setup.Directory}"/>
+        <Button x:Name="btnDirectoryBrowse" Grid.Row="3" Grid.Column="2" Margin="0,0,0,6"
                 HorizontalAlignment="Right" VerticalAlignment="Stretch" Padding="8,0,8,0"
                 Style="{StaticResource SquareButtonStyle}"
                 Content="..."
                 Click="BtnDirectoryBrowse_Click"/>
-        <Label x:Name="lblLogDirectory" Grid.Row="1" Grid.Column="0"
+        <Label x:Name="lblLogDirectory" Grid.Row="4" Grid.Column="0"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
                Content="Log Directory"/>
-        <TextBox x:Name="txtLogDirectory" Grid.Row="1" Grid.Column="1"
+        <TextBox x:Name="txtLogDirectory" Grid.Row="4" Grid.Column="1"
                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
                  Controls:TextBoxHelper.Watermark="Same as Config Directory"
-                 Text="{Binding LogDirectory}"/>
-        <Button x:Name="btnLogDirectoryBrowse" Grid.Row="1" Grid.Column="2" Margin="0,0,0,6"
+                 Text="{Binding Setup.LogDirectory}"/>
+        <Button x:Name="btnLogDirectoryBrowse" Grid.Row="4" Grid.Column="2" Margin="0,0,0,6"
                 HorizontalAlignment="Right" VerticalAlignment="Stretch" Padding="8,0,8,0"
                 Style="{StaticResource SquareButtonStyle}"
                 Content="..."
                 Click="BtnLogDirectoryBrowse_Click"/>
-        <Label x:Name="lblCertificateDirectory" Grid.Row="2" Grid.Column="0"
+        <Label x:Name="lblCertificateDirectory" Grid.Row="5" Grid.Column="0"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
                Content="Certificate Directory"/>
-        <TextBox x:Name="txtCertificateDirectory" Grid.Row="2" Grid.Column="1"
+        <TextBox x:Name="txtCertificateDirectory" Grid.Row="5" Grid.Column="1"
                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
                  Controls:TextBoxHelper.Watermark="Same as Config Directory"
-                 Text="{Binding CertificateDirectory}"/>
-        <Button x:Name="btnCertificateDirectoryBrowse" Grid.Row="2" Grid.Column="2" Margin="0,0,0,6"
+                 Text="{Binding Setup.CertificateDirectory}"/>
+        <Button x:Name="btnCertificateDirectoryBrowse" Grid.Row="5" Grid.Column="2" Margin="0,0,0,6"
                 HorizontalAlignment="Right" VerticalAlignment="Stretch" Padding="8,0,8,0"
                 Style="{StaticResource SquareButtonStyle}"
                 Content="..."
                 Click="BtnCertificateDirectoryBrowse_Click"/>
-
-        <Label x:Name="lblServer" Grid.Row="3" Grid.Column="0"
-               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
-               Content="Server" FontWeight="Bold"/>
-        <local:ServerControl x:Name="crtlServer" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
-                             HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                             DataContext="{Binding Server}"/>
-
-        <Label x:Name="lblServices" Grid.Row="4" Grid.Column="0"
-               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
-               Content="Services" FontWeight="Bold"/>
-        <Button x:Name="btnAddService" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
-                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,0,6" Padding="12,6,12,8"
-                Style="{StaticResource AccentedSquareButtonStyle}"
-                Content="Add Service" Command="local:GateCommands.ServiceNew" />
-        <ItemsControl x:Name="itemsServices" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
-                      HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                      ItemsSource="{Binding Server.Services}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical" />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <StackPanel Grid.Row="0"
-                                    HorizontalAlignment="Right"
-                                    Orientation="Horizontal">
-                            <Button Content="Up" Margin="0,0,10,6" Padding="12,6,12,8"
-                                    Style="{StaticResource SquareButtonStyle}"
-                                    Command="local:GateCommands.ServiceMoveUp" CommandParameter="{Binding Mode=OneWay}"/>
-                            <Button Content="Down" Margin="0,0,10,6" Padding="12,6,12,8"
-                                    Style="{StaticResource SquareButtonStyle}"
-                                    Command="local:GateCommands.ServiceMoveDown" CommandParameter="{Binding Mode=OneWay}"/>
-                            <Button Content="Delete" Margin="0,0,0,6" Padding="12,6,12,8"
-                                    Style="{StaticResource SquareButtonStyle}"
-                                    Command="local:GateCommands.ServiceDelete" CommandParameter="{Binding Mode=OneWay}"/>
-                        </StackPanel>
-                        <local:ServiceControl Grid.Row="1" />
-                    </Grid>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        
     </Grid>
 </UserControl>

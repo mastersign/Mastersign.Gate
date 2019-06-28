@@ -9,6 +9,14 @@ namespace Mastersign.Gate
 {
     public static class GateCommands
     {
+        public static readonly RoutedUICommand ProjectFileNew = new RoutedUICommand(
+            "New Project File", "ProjectFileNew",
+            typeof(GateCommands),
+            new InputGestureCollection()
+            {
+                new KeyGesture(Key.N, ModifierKeys.Control)
+            });
+
         public static readonly RoutedUICommand ProjectFileOpen = new RoutedUICommand(
             "Open Project File", "ProjectFileOpen",
             typeof(GateCommands),
@@ -30,7 +38,7 @@ namespace Mastersign.Gate
             typeof(GateCommands),
             new InputGestureCollection()
             {
-                new KeyGesture(Key.N, ModifierKeys.Control)
+                new KeyGesture(Key.N, ModifierKeys.Control | ModifierKeys.Shift)
             });
 
         public static readonly RoutedUICommand ServiceMoveUp = new RoutedUICommand(

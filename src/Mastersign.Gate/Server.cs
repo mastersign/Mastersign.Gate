@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Mastersign.Gate
 {
-    partial class Setup
+    partial class Server
     {
         private void Initialize()
         {
-            Version = ProjectFile<Setup>.CURRENT_VERSION;
-            Server = new Server();
+            HttpsCertificate = new Certificate();
         }
     }
 }
