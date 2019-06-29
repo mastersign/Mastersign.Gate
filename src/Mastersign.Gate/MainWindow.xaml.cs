@@ -28,6 +28,10 @@ namespace Mastersign.Gate
         {
             InitializeComponent();
             DataContext = Core;
+
+            _ = Core.NginxManager.FindSystemExecutable();
+            _ = Core.NginxManager.FindOnlineExecutable();
+            _ = Core.NginxManager.FindInternalExecutable();
         }
 
         public void ProjectFileNew_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -99,11 +103,19 @@ namespace Mastersign.Gate
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            Core.NginxManager.FindSystemExecutable();
-            Core.NginxManager.FindInternalExecutable();
-            await Core.NginxManager.FindOnlineExecutable();
-            await Core.NginxManager.DownloadOnlineExecutable();
-            Core.NginxManager.ExtractOnlineExecutable();
+            await Task.WhenAll(
+                Core.NginxManager.FindSystemExecutable(),
+                Core.NginxManager.FindInternalExecutable(),
+                Core.NginxManager.FindOnlineExecutable());
+            if (Core.NginxManager.MonitorState.FoundOnlineExecutable)
+            {
+                await Core.NginxManager.DownloadOnlineExecutable();
+                if (Core.NginxManager.MonitorState.FoundResourceExecutable)
+                {
+                    await Core.NginxManager.ExtractOnlineExecutable();
+                    await Core.NginxManager.FindInternalExecutable();
+                }
+            }
         }
     }
 }

@@ -22,6 +22,8 @@
       <Property name="OnlineExecutableUrl" />
 
       <Property name="DownloadingOnlineExecutable" type="bool" />
+      <Property name="FoundResourceExecutable" type="bool" />
+      
       <Property name="ExtractingOnlineExecutable" type="bool" />
       
       <Property name="CheckingInternalExecutable" type="bool" />

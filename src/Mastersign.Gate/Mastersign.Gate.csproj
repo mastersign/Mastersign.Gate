@@ -60,6 +60,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -83,6 +85,9 @@
     </ApplicationDefinition>
     <Compile Include="CertificateControl.xaml.cs">
       <DependentUpon>CertificateControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DependencyControl.xaml.cs">
+      <DependentUpon>DependencyControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="GateCommands.cs" />
     <Compile Include="Core.cs" />
@@ -111,6 +116,10 @@
     </Compile>
     <Compile Include="WindowExtensions.cs" />
     <Page Include="CertificateControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DependencyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

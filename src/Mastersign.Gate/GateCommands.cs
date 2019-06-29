@@ -53,5 +53,8 @@ namespace Mastersign.Gate
             "Delete Service", "ServiceDelete",
             typeof(GateCommands));
 
+        public static readonly RoutedUICommand NginxDownload = new RoutedUICommand(
+            "Download Nginx", "NginxDownload",
+            typeof(GateCommands));
     }
 }

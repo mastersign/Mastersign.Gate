@@ -31,7 +31,7 @@ namespace Mastersign.Gate
                 ? BinaryDirectory
                 : System.IO.Path.Combine(ProgrammDirectory, BinaryDirectory);
 
-        public NginxManager NginxManager { get; private set; }
+        public NginxManager NginxManager { get; protected set; }
 
         #region Setup Observation
 

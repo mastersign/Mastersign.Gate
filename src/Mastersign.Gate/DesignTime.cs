@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +13,10 @@ namespace Mastersign.Gate
         public DesignTimeCore()
         {
             Setup = new DesignTimeSetup();
+            NginxManager = new DesignTimeNginxManager();
         }
     }
+
     public class DesignTimeSetup : Setup
     {
         public DesignTimeSetup()
@@ -51,6 +54,20 @@ namespace Mastersign.Gate
         {
             UrlRewrite = true;
             HtmlContentRewrite = true;
+        }
+    }
+
+    public class DesignTimeNginxManager : NginxManager
+    {
+        public DesignTimeNginxManager()
+            : base(null)
+        {
+            MonitorState.FoundSystemExecutable = false;
+            MonitorState.SystemVersion = "not found";
+            MonitorState.CheckingInternalExecutable = true;
+            MonitorState.FoundOnlineExecutable = true;
+            MonitorState.OnlineExecutableUrl = "https://nginx.org/download/nginx-1.16.1.zip";
+            MonitorState.OnlineVersion = "1.16.1";
         }
     }
 }

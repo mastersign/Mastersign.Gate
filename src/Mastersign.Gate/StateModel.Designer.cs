@@ -34,6 +34,7 @@ namespace Mastersign.Gate
                 (Environment.NewLine + @"    OnlineVersion = " + (!ReferenceEquals(_onlineVersion, null) ? _onlineVersion.ToString(formatProvider) : @"null").Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    OnlineExecutableUrl = " + (!ReferenceEquals(_onlineExecutableUrl, null) ? _onlineExecutableUrl.ToString(formatProvider) : @"null").Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    DownloadingOnlineExecutable = " + _downloadingOnlineExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
+                (Environment.NewLine + @"    FoundResourceExecutable = " + _foundResourceExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    ExtractingOnlineExecutable = " + _extractingOnlineExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    CheckingInternalExecutable = " + _checkingInternalExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    FoundInternalExecutable = " + _foundInternalExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
@@ -340,6 +341,38 @@ namespace Mastersign.Gate
                 }
                 _downloadingOnlineExecutable = value;
                 this.OnDownloadingOnlineExecutableChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property FoundResourceExecutable
+        
+        private bool _foundResourceExecutable;
+        
+        public event EventHandler FoundResourceExecutableChanged;
+        
+        protected virtual void OnFoundResourceExecutableChanged()
+        {
+            EventHandler handler = FoundResourceExecutableChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"FoundResourceExecutable");
+        }
+        
+        public virtual bool FoundResourceExecutable
+        {
+            get { return _foundResourceExecutable; }
+            set
+            {
+                if ((value == _foundResourceExecutable))
+                {
+                    return;
+                }
+                _foundResourceExecutable = value;
+                this.OnFoundResourceExecutableChanged();
             }
         }
         

@@ -1,0 +1,93 @@
+﻿<UserControl x:Class="Mastersign.Gate.DependencyControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:local="clr-namespace:Mastersign.Gate"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeNginxManager}}"
+             d:DesignHeight="350" d:DesignWidth="600">
+    <UserControl.CommandBindings>
+        <CommandBinding Command="local:GateCommands.NginxDownload" CanExecute="NginxDownload_CanExecute" Executed="NginxDownload_Executed" />
+    </UserControl.CommandBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="0"
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+               Content="NGiNX" FontSize="16" FontFamily="Segoe UI Semibold" />
+
+        <Label Grid.Row="1" Margin="0,0,10,6"
+               HorizontalAlignment="Right" VerticalAlignment="Top"
+               Content="System" />
+        <Controls:MetroProgressBar Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,16"
+                                   VerticalAlignment="Center"
+                                   Visibility="Hidden"
+                                   Controls:VisibilityHelper.IsVisible="{Binding MonitorState.CheckingSystemExecutable}"
+                                   IsIndeterminate="True"/>
+        <Label Grid.Row="1" Grid.Column="1" Margin="0,0,0,6"
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+               Controls:VisibilityHelper.IsHidden="{Binding MonitorState.CheckingSystemExecutable}"
+               Content="{Binding MonitorState.SystemVersion}" />
+        <Label Grid.Row="2" Grid.Column="1" Margin="0,0,0,6"
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+               Visibility="Collapsed"
+               Controls:VisibilityHelper.IsVisible="{Binding MonitorState.FoundSystemExecutable}"
+               Content="{Binding MonitorState.SystemPath}" />
+
+        <Label Grid.Row="3" Margin="0,0,10,6"
+               HorizontalAlignment="Right" VerticalAlignment="Top"
+               Content="Online" />
+        <Button Grid.Row="3" Grid.Column="2" Padding="10,4,10,6"
+                Style="{StaticResource AccentedSquareButtonStyle}"
+                Command="local:GateCommands.NginxDownload"
+                Content="Download"/>
+
+        <Controls:MetroProgressBar Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,13"
+                                   VerticalAlignment="Center"
+                                   Visibility="Hidden"
+                                   Controls:VisibilityHelper.IsVisible="{Binding MonitorState.CheckingOnlineExecutable}"
+                                   IsIndeterminate="True"/>
+        <Label Grid.Row="3" Grid.Column="1" Margin="0,0,0,6"
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+               Controls:VisibilityHelper.IsHidden="{Binding MonitorState.CheckingOnlineExecutable}"
+               Content="{Binding MonitorState.OnlineVersion}" />
+        <Label Grid.Row="4" Grid.Column="1" Margin="0,0,0,6"
+               HorizontalAlignment="Left" VerticalAlignment="Top"
+               Visibility="Collapsed"
+               Controls:VisibilityHelper.IsVisible="{Binding MonitorState.FoundOnlineExecutable}"
+               >
+            <Hyperlink NavigateUri="{Binding MonitorState.OnlineExecutableUrl}" Click="OnlineZipFile_Click">
+                <TextBlock Text="{Binding MonitorState.OnlineExecutableUrl}" />
+            </Hyperlink>
+        </Label>
+
+        <Label Grid.Row="5" Margin="0,0,10,6"
+               HorizontalAlignment="Right" VerticalAlignment="Top"
+               Content="Internal" />
+        <Controls:MetroProgressBar Grid.Row="5" Grid.Column="1"
+                                   VerticalAlignment="Center"
+                                   Visibility="Hidden"
+                                   Controls:VisibilityHelper.IsVisible="{Binding MonitorState.CheckingInternalExecutable}"
+                                   IsIndeterminate="True" Grid.ColumnSpan="2" Margin="0,16"/>
+        <Label Grid.Row="5" Grid.Column="1" Margin="0,0,0,6"
+                HorizontalAlignment="Left" VerticalAlignment="Top"
+                Controls:VisibilityHelper.IsHidden="{Binding MonitorState.CheckingInternalExecutable}"
+                Content="{Binding MonitorState.InternalVersion}" />
+
+    </Grid>
+</UserControl>
