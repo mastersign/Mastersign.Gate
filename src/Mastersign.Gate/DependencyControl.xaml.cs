@@ -26,27 +26,40 @@ namespace Mastersign.Gate
             InitializeComponent();
         }
 
+        public void NginxFindDownload_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (!(DataContext is Core core)) return;
+            e.CanExecute = true;
+        }
+
+        public async void NginxFindDownload_Executed(object sender, RoutedEventArgs e)
+        {
+            if (!(DataContext is Core core)) return;
+            await core.NginxManager.FindOnlineExecutable();
+            CommandManager.InvalidateRequerySuggested();
+        }
+
         public void NginxDownload_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (!(DataContext is NginxManager nginx)) return;
-            e.CanExecute = nginx.MonitorState.FoundOnlineExecutable;
+            if (!(DataContext is Core core)) return;
+            e.CanExecute = core.NginxManager.State.FoundOnlineExecutable;
         }
 
         public async void NginxDownload_Executed(object sender, RoutedEventArgs e)
         {
-            if (!(DataContext is NginxManager nginx)) return;
-            await nginx.DownloadOnlineExecutable();
-            if (nginx.MonitorState.FoundResourceExecutable)
+            if (!(DataContext is Core core)) return;
+            await core.NginxManager.DownloadOnlineExecutable();
+            if (core.NginxManager.State.FoundResourceExecutable)
             {
-                await nginx.ExtractOnlineExecutable();
-                await nginx.FindInternalExecutable();
+                await core.NginxManager.ExtractOnlineExecutable();
+                await core.NginxManager.FindInternalExecutable();
             }
         }
 
         private void OnlineZipFile_Click(object sender, RoutedEventArgs e)
         {
-            if (!(DataContext is NginxManager nginx)) return;
-            Process.Start(nginx.MonitorState.OnlineExecutableUrl);
+            if (!(DataContext is Core core)) return;
+            Process.Start(core.NginxManager.State.OnlineExecutableUrl);
         }
     }
 }

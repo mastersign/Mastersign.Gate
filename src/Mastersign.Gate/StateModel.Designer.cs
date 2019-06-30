@@ -9,9 +9,9 @@ namespace Mastersign.Gate
     
     // Scaleton Version: 0.3.0
     
-    public partial class NginxMonitorState : INotifyPropertyChanged
+    public partial class NginxManagerState : INotifyPropertyChanged
     {
-        public NginxMonitorState()
+        public NginxManagerState()
         {
         }
         
@@ -25,6 +25,8 @@ namespace Mastersign.Gate
         public virtual string ToString(IFormatProvider formatProvider)
         {
             return (this.GetType().FullName + @": " + (
+                (Environment.NewLine + @"    ExecutableAvailable = " + _executableAvailable.ToString(formatProvider).Replace("\n", "\n    ")) + 
+                (Environment.NewLine + @"    SelectedExecutablePath = " + (!ReferenceEquals(_selectedExecutablePath, null) ? _selectedExecutablePath.ToString(formatProvider) : @"null").Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    CheckingSystemExecutable = " + _checkingSystemExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    FoundSystemExecutable = " + _foundSystemExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    SystemPath = " + (!ReferenceEquals(_systemPath, null) ? _systemPath.ToString(formatProvider) : @"null").Replace("\n", "\n    ")) + 
@@ -38,7 +40,9 @@ namespace Mastersign.Gate
                 (Environment.NewLine + @"    ExtractingOnlineExecutable = " + _extractingOnlineExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    CheckingInternalExecutable = " + _checkingInternalExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    FoundInternalExecutable = " + _foundInternalExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
-                (Environment.NewLine + @"    InternalVersion = " + (!ReferenceEquals(_internalVersion, null) ? _internalVersion.ToString(formatProvider) : @"null").Replace("\n", "\n    "))));
+                (Environment.NewLine + @"    InternalVersion = " + (!ReferenceEquals(_internalVersion, null) ? _internalVersion.ToString(formatProvider) : @"null").Replace("\n", "\n    ")) + 
+                (Environment.NewLine + @"    IsConfigurationValid = " + _isConfigurationValid.ToString(formatProvider).Replace("\n", "\n    ")) + 
+                (Environment.NewLine + @"    ConfigurationErrors = " + (!ReferenceEquals(_configurationErrors, null) ? _configurationErrors.ToString(formatProvider) : @"null").Replace("\n", "\n    "))));
         }
         
         #endregion
@@ -53,6 +57,70 @@ namespace Mastersign.Gate
             if (!ReferenceEquals(handler, null))
             {
                 handler(this, new PropertyChangedEventArgs(name));
+            }
+        }
+        
+        #endregion
+        
+        #region Property ExecutableAvailable
+        
+        private bool _executableAvailable;
+        
+        public event EventHandler ExecutableAvailableChanged;
+        
+        protected virtual void OnExecutableAvailableChanged()
+        {
+            EventHandler handler = ExecutableAvailableChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"ExecutableAvailable");
+        }
+        
+        public virtual bool ExecutableAvailable
+        {
+            get { return _executableAvailable; }
+            set
+            {
+                if ((value == _executableAvailable))
+                {
+                    return;
+                }
+                _executableAvailable = value;
+                this.OnExecutableAvailableChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property SelectedExecutablePath
+        
+        private string _selectedExecutablePath;
+        
+        public event EventHandler SelectedExecutablePathChanged;
+        
+        protected virtual void OnSelectedExecutablePathChanged()
+        {
+            EventHandler handler = SelectedExecutablePathChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"SelectedExecutablePath");
+        }
+        
+        public virtual string SelectedExecutablePath
+        {
+            get { return _selectedExecutablePath; }
+            set
+            {
+                if (string.Equals(value, _selectedExecutablePath))
+                {
+                    return;
+                }
+                _selectedExecutablePath = value;
+                this.OnSelectedExecutablePathChanged();
             }
         }
         
@@ -501,6 +569,70 @@ namespace Mastersign.Gate
                 }
                 _internalVersion = value;
                 this.OnInternalVersionChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property IsConfigurationValid
+        
+        private bool _isConfigurationValid;
+        
+        public event EventHandler IsConfigurationValidChanged;
+        
+        protected virtual void OnIsConfigurationValidChanged()
+        {
+            EventHandler handler = IsConfigurationValidChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"IsConfigurationValid");
+        }
+        
+        public virtual bool IsConfigurationValid
+        {
+            get { return _isConfigurationValid; }
+            set
+            {
+                if ((value == _isConfigurationValid))
+                {
+                    return;
+                }
+                _isConfigurationValid = value;
+                this.OnIsConfigurationValidChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property ConfigurationErrors
+        
+        private string _configurationErrors;
+        
+        public event EventHandler ConfigurationErrorsChanged;
+        
+        protected virtual void OnConfigurationErrorsChanged()
+        {
+            EventHandler handler = ConfigurationErrorsChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"ConfigurationErrors");
+        }
+        
+        public virtual string ConfigurationErrors
+        {
+            get { return _configurationErrors; }
+            set
+            {
+                if (string.Equals(value, _configurationErrors))
+                {
+                    return;
+                }
+                _configurationErrors = value;
+                this.OnConfigurationErrorsChanged();
             }
         }
         

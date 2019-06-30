@@ -1,11 +1,13 @@
 ﻿using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -18,17 +20,35 @@ namespace Mastersign.Gate
         private const string NGINX_ORG_DOWNLOAD_XPATH = "//div[@id='main']/descendant::div[@id='content']/descendant::table/descendant::td/a";
         private static readonly Regex NGINX_ORG_DOWNLOAD_RE = new Regex(@"nginx.*Windows.*?(?<version>\d+(?:\.\d+){1,3})", RegexOptions.IgnoreCase);
         private static readonly Regex NGINX_ORG_DOWNLOAD_HREF_RE = new Regex(@"nginx.*?(?<version>\d+(?:\.\d+){1,3}).*\.zip$", RegexOptions.IgnoreCase);
-        private static readonly Regex NGINX_VERSION_RE = new Regex(@"^nginx version. \w+?/(?<version>\d+(?:\.\d+){1,3})\s*$", RegexOptions.IgnoreCase);
+        private static readonly Regex NGINX_CLI_VERSION_RE = new Regex(@"^nginx version. \w+?/(?<version>\d+(?:\.\d+){1,3})\s*$", RegexOptions.IgnoreCase);
 
         public Core Core { get; }
 
-        public NginxMonitorState MonitorState { get; }
+        public NginxManagerState State { get; }
 
         public NginxManager(Core core)
         {
             Core = core;
-            MonitorState = new NginxMonitorState();
+            State = new NginxManagerState();
+            State.PropertyChanged += State_Changed;
         }
+
+        private void State_Changed(object sender, PropertyChangedEventArgs e)
+        {
+            if (
+                e.PropertyName == nameof(NginxManagerState.ExecutableAvailable) ||
+                e.PropertyName == nameof(NginxManagerState.SelectedExecutablePath)
+            ) return;
+
+            State.ExecutableAvailable = State.FoundSystemExecutable || State.FoundInternalExecutable;
+            State.SelectedExecutablePath = State.FoundInternalExecutable
+                ? InternalExecutablePath
+                : State.FoundSystemExecutable
+                    ? State.SystemPath
+                    : null;
+        }
+
+        public Task UpdateState() => Task.WhenAll(FindSystemExecutable(), FindInternalExecutable());
 
         private async Task<string> AskNginxVersion(string executablePath)
         {
@@ -45,7 +65,7 @@ namespace Mastersign.Gate
             var line = default(string);
             while ((line = await p.StandardError.ReadLineAsync()) != null)
             {
-                var m = NGINX_VERSION_RE.Match(line);
+                var m = NGINX_CLI_VERSION_RE.Match(line);
                 if (m.Success)
                 {
                     result = m.Groups["version"].Value;
@@ -58,10 +78,10 @@ namespace Mastersign.Gate
 
         public async Task FindSystemExecutable()
         {
-            MonitorState.CheckingSystemExecutable = true;
-            MonitorState.SystemPath = null;
-            MonitorState.SystemVersion = null;
-            MonitorState.FoundSystemExecutable = false;
+            State.CheckingSystemExecutable = true;
+            State.SystemPath = null;
+            State.SystemVersion = null;
+            State.FoundSystemExecutable = false;
             try
             {
                 var path = await Task.Run(() => Environment.GetEnvironmentVariable("PATH")
@@ -71,18 +91,18 @@ namespace Mastersign.Gate
                 await Task.Run(() => System.Threading.Thread.Sleep(5000));
                 if (path != null)
                 {
-                    MonitorState.SystemPath = path;
-                    MonitorState.FoundSystemExecutable = true;
-                    MonitorState.SystemVersion = await AskNginxVersion(path) ?? "unknown";
+                    State.SystemPath = path;
+                    State.FoundSystemExecutable = true;
+                    State.SystemVersion = await AskNginxVersion(path) ?? "unknown";
                 }
                 else
                 {
-                    MonitorState.SystemVersion = "not found";
+                    State.SystemVersion = "not found";
                 }
             }
             finally
             {
-                MonitorState.CheckingSystemExecutable = false;
+                State.CheckingSystemExecutable = false;
             }
         }
 
@@ -126,10 +146,10 @@ namespace Mastersign.Gate
 
         public async Task FindOnlineExecutable()
         {
-            MonitorState.CheckingOnlineExecutable = true;
-            MonitorState.FoundOnlineExecutable = false;
-            MonitorState.OnlineExecutableUrl = null;
-            MonitorState.OnlineVersion = null;
+            State.CheckingOnlineExecutable = true;
+            State.FoundOnlineExecutable = false;
+            State.OnlineExecutableUrl = null;
+            State.OnlineVersion = null;
             byte[] pageData;
             var doc = new HtmlDocument();
             try
@@ -145,56 +165,56 @@ namespace Mastersign.Gate
                 var latestOnlineVersion = await Task.Run(() => FindLatestOnlineVersion(doc));
                 if (latestOnlineVersion != null)
                 {
-                    MonitorState.FoundOnlineExecutable = true;
-                    MonitorState.OnlineExecutableUrl = latestOnlineVersion.Url;
-                    MonitorState.OnlineVersion = latestOnlineVersion.Version;
+                    State.FoundOnlineExecutable = true;
+                    State.OnlineExecutableUrl = latestOnlineVersion.Url;
+                    State.OnlineVersion = latestOnlineVersion.Version;
                 }
             }
             finally
             {
-                MonitorState.CheckingOnlineExecutable = false;
+                State.CheckingOnlineExecutable = false;
             }
         }
 
-        private string ResourceExecutablePath => Path.Combine(Core.AbsoluteResourceDirectory, "nginx.zip");
+        private string ResourcePath => Path.Combine(Core.AbsoluteResourceDirectory, "nginx.zip");
 
         private string InternalExecutablePath => Path.Combine(Core.AbsoluteBinaryDirectory, "nginx.exe");
 
         public async Task DownloadOnlineExecutable()
         {
-            if (string.IsNullOrWhiteSpace(MonitorState.OnlineVersion) ||
-                string.IsNullOrWhiteSpace(MonitorState.OnlineExecutableUrl))
+            if (string.IsNullOrWhiteSpace(State.OnlineVersion) ||
+                string.IsNullOrWhiteSpace(State.OnlineExecutableUrl))
             {
                 throw new InvalidOperationException("No URL for online executable available.");
             }
-            MonitorState.DownloadingOnlineExecutable = true;
-            MonitorState.FoundResourceExecutable = false;
+            State.DownloadingOnlineExecutable = true;
+            State.FoundResourceExecutable = false;
 
             try
             {
                 if (!Directory.Exists(Core.AbsoluteResourceDirectory))
                     Directory.CreateDirectory(Core.AbsoluteResourceDirectory);
-                if (File.Exists(ResourceExecutablePath))
+                if (File.Exists(ResourcePath))
                 {
-                    File.Delete(ResourceExecutablePath);
+                    File.Delete(ResourcePath);
                 }
                 using (var wc = new WebClient())
                 {
-                    await wc.DownloadFileTaskAsync(MonitorState.OnlineExecutableUrl, ResourceExecutablePath);
+                    await wc.DownloadFileTaskAsync(State.OnlineExecutableUrl, ResourcePath);
                 }
-                MonitorState.FoundResourceExecutable = File.Exists(ResourceExecutablePath);
+                State.FoundResourceExecutable = File.Exists(ResourcePath);
                 await FindInternalExecutable();
             }
             finally
             {
-                MonitorState.DownloadingOnlineExecutable = false;
+                State.DownloadingOnlineExecutable = false;
             }
         }
 
         public async Task ExtractOnlineExecutable()
         {
-            MonitorState.ExtractingOnlineExecutable = true;
-            MonitorState.FoundInternalExecutable = false;
+            State.ExtractingOnlineExecutable = true;
+            State.FoundInternalExecutable = false;
             try
             {
                 await Task.Run(() =>
@@ -202,11 +222,11 @@ namespace Mastersign.Gate
                     if (!Directory.Exists(Core.AbsoluteBinaryDirectory))
                         Directory.CreateDirectory(Core.AbsoluteBinaryDirectory);
 
-                    if (!File.Exists(ResourceExecutablePath))
+                    if (!File.Exists(ResourcePath))
                     {
                         throw new InvalidOperationException("The ZIP file with the nginx executable is not present.");
                     }
-                    using (var archive = ZipFile.Open(ResourceExecutablePath, ZipArchiveMode.Read))
+                    using (var archive = ZipFile.Open(ResourcePath, ZipArchiveMode.Read))
                     {
                         var exeEntry = archive.Entries.FirstOrDefault(e => string.Equals(e.Name, "nginx.exe"));
                         if (exeEntry != null)
@@ -218,27 +238,87 @@ namespace Mastersign.Gate
             }
             finally
             {
-                MonitorState.ExtractingOnlineExecutable = false;
+                State.ExtractingOnlineExecutable = false;
             }
         }
 
         public async Task FindInternalExecutable()
         {
-            MonitorState.CheckingInternalExecutable = true;
-            MonitorState.FoundInternalExecutable = false;
-            MonitorState.InternalVersion = null;
+            State.CheckingInternalExecutable = true;
+            State.FoundInternalExecutable = false;
+            State.InternalVersion = null;
             try
             {
-                MonitorState.FoundInternalExecutable = await Task.Run(() => File.Exists(InternalExecutablePath));
-                if (MonitorState.FoundInternalExecutable)
+                State.FoundInternalExecutable = await Task.Run(() => File.Exists(InternalExecutablePath));
+                if (State.FoundInternalExecutable)
                 {
-                    MonitorState.InternalVersion = await AskNginxVersion(InternalExecutablePath);
+                    State.InternalVersion = await AskNginxVersion(InternalExecutablePath) ?? "unknown";
+                }
+                else
+                {
+                    State.InternalVersion = "not found";
                 }
             }
             finally
             {
-                MonitorState.CheckingInternalExecutable = false;
+                State.CheckingInternalExecutable = false;
             }
+        }
+
+        private static async Task WriteResourceFile(string targetFile, string name)
+        {
+            using (var src = Assembly.GetExecutingAssembly().GetManifestResourceStream(typeof(NginxManager), "res." + name))
+            {
+                using (var trg = File.OpenWrite(targetFile))
+                {
+                    await src.CopyToAsync(trg);
+                }
+            }
+        }
+
+        public async Task SetupConfigDirectory(string configDir, string logDir, string certDir, Setup setup)
+        {
+            await Task.Run(() =>
+            {
+                if (!Directory.Exists(configDir)) Directory.CreateDirectory(configDir);
+                var tempDir = Path.Combine(configDir, "temp");
+                if (!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
+                if (!Directory.Exists(logDir)) Directory.CreateDirectory(logDir);
+                if (setup.Server.UseHttps)
+                {
+                    if (!Directory.Exists(certDir)) Directory.CreateDirectory(certDir);
+                }
+            });
+            await setup.WriteNginxConfig(Path.Combine(configDir, "nginx.conf"));
+            await WriteResourceFile(Path.Combine(configDir, "mime.types"), "mime.types");
+        }
+
+        public async Task CheckConfigDirectory(string configDir)
+        {
+            if (State.SelectedExecutablePath == null)
+            {
+                throw new InvalidOperationException("No nginx executable selected.");
+            }
+            var configFilePath = Path.Combine(configDir, "nginx.conf");
+            var pi = new ProcessStartInfo(State.SelectedExecutablePath, $"-t -q -c \"{configFilePath}\"")
+            {
+                WorkingDirectory = configDir,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardError = true,
+                StandardErrorEncoding = Encoding.UTF8,
+            };
+            var p = Process.Start(pi);
+            var errors = new List<string>();
+            var line = default(string);
+            while ((line = await p.StandardError.ReadLineAsync()) != null)
+            {
+                errors.Add(line);
+            }
+            await Task.Run(p.WaitForExit);
+            State.ConfigurationErrors =
+                errors.Count > 0 ? string.Join(Environment.NewLine, errors) : null;
+            State.IsConfigurationValid = p.ExitCode == 0;
         }
     }
 }

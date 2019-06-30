@@ -62,12 +62,12 @@ namespace Mastersign.Gate
         public DesignTimeNginxManager()
             : base(null)
         {
-            MonitorState.FoundSystemExecutable = false;
-            MonitorState.SystemVersion = "not found";
-            MonitorState.CheckingInternalExecutable = true;
-            MonitorState.FoundOnlineExecutable = true;
-            MonitorState.OnlineExecutableUrl = "https://nginx.org/download/nginx-1.16.1.zip";
-            MonitorState.OnlineVersion = "1.16.1";
+            State.FoundSystemExecutable = false;
+            State.SystemVersion = "not found";
+            State.CheckingInternalExecutable = true;
+            State.FoundOnlineExecutable = true;
+            State.OnlineExecutableUrl = "https://nginx.org/download/nginx-1.16.1.zip";
+            State.OnlineVersion = "1.16.1";
         }
     }
 }

@@ -10,7 +10,10 @@
 
   <Types>
     
-    <Class name="NginxMonitorState">
+    <Class name="NginxManagerState">
+      <Property name="ExecutableAvailable" type="bool" />
+      <Property name="SelectedExecutablePath" />
+      
       <Property name="CheckingSystemExecutable" type="bool" />
       <Property name="FoundSystemExecutable" type="bool" />
       <Property name="SystemPath" />
@@ -29,6 +32,9 @@
       <Property name="CheckingInternalExecutable" type="bool" />
       <Property name="FoundInternalExecutable" type="bool" />
       <Property name="InternalVersion" />
+
+      <Property name="IsConfigurationValid" type="bool" />
+      <Property name="ConfigurationErrors" />
     </Class>
     
   </Types>

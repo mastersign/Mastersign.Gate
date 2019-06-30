@@ -6,9 +6,10 @@
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:local="clr-namespace:Mastersign.Gate"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeNginxManager}}"
+             d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeCore}}"
              d:DesignHeight="350" d:DesignWidth="600">
     <UserControl.CommandBindings>
+        <CommandBinding Command="local:GateCommands.NginxFindDownload" CanExecute="NginxFindDownload_CanExecute" Executed="NginxFindDownload_Executed" />
         <CommandBinding Command="local:GateCommands.NginxDownload" CanExecute="NginxDownload_CanExecute" Executed="NginxDownload_Executed" />
     </UserControl.CommandBindings>
     <Grid>
@@ -37,42 +38,48 @@
         <Controls:MetroProgressBar Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,16"
                                    VerticalAlignment="Center"
                                    Visibility="Hidden"
-                                   Controls:VisibilityHelper.IsVisible="{Binding MonitorState.CheckingSystemExecutable}"
+                                   Controls:VisibilityHelper.IsVisible="{Binding NginxManager.State.CheckingSystemExecutable}"
                                    IsIndeterminate="True"/>
         <Label Grid.Row="1" Grid.Column="1" Margin="0,0,0,6"
                HorizontalAlignment="Left" VerticalAlignment="Top"
-               Controls:VisibilityHelper.IsHidden="{Binding MonitorState.CheckingSystemExecutable}"
-               Content="{Binding MonitorState.SystemVersion}" />
+               Controls:VisibilityHelper.IsHidden="{Binding NginxManager.State.CheckingSystemExecutable}"
+               Content="{Binding NginxManager.State.SystemVersion}" />
         <Label Grid.Row="2" Grid.Column="1" Margin="0,0,0,6"
                HorizontalAlignment="Left" VerticalAlignment="Top"
                Visibility="Collapsed"
-               Controls:VisibilityHelper.IsVisible="{Binding MonitorState.FoundSystemExecutable}"
-               Content="{Binding MonitorState.SystemPath}" />
+               Controls:VisibilityHelper.IsVisible="{Binding NginxManager.State.FoundSystemExecutable}"
+               Content="{Binding NginxManager.State.SystemPath}" />
 
         <Label Grid.Row="3" Margin="0,0,10,6"
                HorizontalAlignment="Right" VerticalAlignment="Top"
                Content="Online" />
-        <Button Grid.Row="3" Grid.Column="2" Padding="10,4,10,6"
+        <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Horizontal">
+        <Button Margin="10,0,0,0" Padding="10,4,10,6"
+                Style="{StaticResource SquareButtonStyle}"
+                Command="local:GateCommands.NginxFindDownload"
+                Content="Check"/>
+            <Button Margin="10,0,0,0" Padding="10,4,10,6"
                 Style="{StaticResource AccentedSquareButtonStyle}"
                 Command="local:GateCommands.NginxDownload"
                 Content="Download"/>
+        </StackPanel>
 
         <Controls:MetroProgressBar Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,13"
                                    VerticalAlignment="Center"
                                    Visibility="Hidden"
-                                   Controls:VisibilityHelper.IsVisible="{Binding MonitorState.CheckingOnlineExecutable}"
+                                   Controls:VisibilityHelper.IsVisible="{Binding NginxManager.State.CheckingOnlineExecutable}"
                                    IsIndeterminate="True"/>
         <Label Grid.Row="3" Grid.Column="1" Margin="0,0,0,6"
                HorizontalAlignment="Left" VerticalAlignment="Top"
-               Controls:VisibilityHelper.IsHidden="{Binding MonitorState.CheckingOnlineExecutable}"
-               Content="{Binding MonitorState.OnlineVersion}" />
+               Controls:VisibilityHelper.IsHidden="{Binding NginxManager.State.CheckingOnlineExecutable}"
+               Content="{Binding NginxManager.State.OnlineVersion}" />
         <Label Grid.Row="4" Grid.Column="1" Margin="0,0,0,6"
                HorizontalAlignment="Left" VerticalAlignment="Top"
                Visibility="Collapsed"
-               Controls:VisibilityHelper.IsVisible="{Binding MonitorState.FoundOnlineExecutable}"
+               Controls:VisibilityHelper.IsVisible="{Binding NginxManager.State.FoundOnlineExecutable}"
                >
-            <Hyperlink NavigateUri="{Binding MonitorState.OnlineExecutableUrl}" Click="OnlineZipFile_Click">
-                <TextBlock Text="{Binding MonitorState.OnlineExecutableUrl}" />
+            <Hyperlink NavigateUri="{Binding NginxManager.State.OnlineExecutableUrl}" Click="OnlineZipFile_Click">
+                <TextBlock Text="{Binding NginxManager.State.OnlineExecutableUrl}" />
             </Hyperlink>
         </Label>
 
@@ -82,12 +89,12 @@
         <Controls:MetroProgressBar Grid.Row="5" Grid.Column="1"
                                    VerticalAlignment="Center"
                                    Visibility="Hidden"
-                                   Controls:VisibilityHelper.IsVisible="{Binding MonitorState.CheckingInternalExecutable}"
+                                   Controls:VisibilityHelper.IsVisible="{Binding NginxManager.State.CheckingInternalExecutable}"
                                    IsIndeterminate="True" Grid.ColumnSpan="2" Margin="0,16"/>
         <Label Grid.Row="5" Grid.Column="1" Margin="0,0,0,6"
                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                Controls:VisibilityHelper.IsHidden="{Binding MonitorState.CheckingInternalExecutable}"
-                Content="{Binding MonitorState.InternalVersion}" />
+                Controls:VisibilityHelper.IsHidden="{Binding NginxManager.State.CheckingInternalExecutable}"
+                Content="{Binding NginxManager.State.InternalVersion}" />
 
     </Grid>
 </UserControl>

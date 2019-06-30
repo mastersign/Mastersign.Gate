@@ -93,12 +93,14 @@
     <Compile Include="Core.cs" />
     <Compile Include="DesignTime.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="NginxConfHelper.cs" />
     <Compile Include="NginxManager.cs" />
     <Compile Include="ProjectFile.cs" />
     <Compile Include="Server.cs" />
     <Compile Include="ServerControl.xaml.cs">
       <DependentUpon>ServerControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Service.cs" />
     <Compile Include="ServiceControl.xaml.cs">
       <DependentUpon>ServiceControl.xaml</DependentUpon>
     </Compile>
@@ -175,11 +177,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="res\mime.types" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="res\win-utf8" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

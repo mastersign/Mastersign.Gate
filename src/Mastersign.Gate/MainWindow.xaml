@@ -21,6 +21,25 @@
                     <local:SetupControl />
                 </ScrollViewer>
             </TabItem>
+            <TabItem Header="Run">
+                <Grid Margin="0,10,16,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button Margin="0,0,0,10" Padding="16,10,16,10"
+                            HorizontalAlignment="Center" VerticalAlignment="Top"
+                            Style="{StaticResource AccentedSquareButtonStyle}"
+                            Content="Test"
+                            Click="Button_Click_1"/>
+                    <CheckBox Grid.Row="1" Margin="0,0,0,10"
+                              Content="Configuration is valid"
+                              IsChecked="{Binding NginxManager.State.IsConfigurationValid}" />
+                    <TextBlock Grid.Row="2" Margin="0,0,0,0"
+                               Text="{Binding NginxManager.State.ConfigurationErrors}" />
+                </Grid>
+            </TabItem>
             <TabItem Header="Frontend">
                 <ScrollViewer Margin="0,8,0,0" Padding="0,10,16,10">
                     <local:ServerControl DataContext="{Binding Setup.Server}" />
@@ -31,8 +50,7 @@
                                             DataContext="{Binding Setup}" />
             </TabItem>
             <TabItem Header="Dependencies">
-                <local:DependencyControl Margin="0,10,16,0"
-                                         DataContext="{Binding NginxManager}" />
+                <local:DependencyControl Margin="0,10,16,0" />
             </TabItem>
         </Controls:MetroAnimatedSingleRowTabControl>
     </Grid>
