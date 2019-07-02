@@ -4,7 +4,8 @@
        xsi:schemaLocation="http://scaleton.mastersign.de/2014/model http://scaleton.mastersign.de/Scaleton_Model_2014.xsd">
 
   <Configuration modelType="ChangeTracking">
-    <ChangeTrackingConfiguration level="Tracking"/>
+    <ChangeTrackingConfiguration level="Tracking" escalateChangeState="true" propagateTransactions="true"/>
+    <CollectionType>ObservableCollection</CollectionType>
     <IsXmlSerializable value="true"/>
   </Configuration>
 

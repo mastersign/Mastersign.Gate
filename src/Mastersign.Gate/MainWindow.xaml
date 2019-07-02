@@ -15,30 +15,15 @@
         <CommandBinding Command="local:GateCommands.ProjectFileSave" CanExecute="ProjectFileSave_CanExecute" Executed="ProjectFileSave_Executed" />
     </Window.CommandBindings>
     <Grid>
-        <Controls:MetroAnimatedSingleRowTabControl Margin="16,16,0,16">
+        <Controls:MetroAnimatedSingleRowTabControl Margin="16,16,0,16" Grid.ColumnSpan="2">
             <TabItem Header="Project">
                 <ScrollViewer Margin="0,8,0,0" Padding="0,10,16,10">
                     <local:SetupControl />
                 </ScrollViewer>
             </TabItem>
             <TabItem Header="Run">
-                <Grid Margin="0,10,16,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Button Margin="0,0,0,10" Padding="16,10,16,10"
-                            HorizontalAlignment="Center" VerticalAlignment="Top"
-                            Style="{StaticResource AccentedSquareButtonStyle}"
-                            Content="Test"
-                            Click="Button_Click_1"/>
-                    <CheckBox Grid.Row="1" Margin="0,0,0,10"
-                              Content="Configuration is valid"
-                              IsChecked="{Binding NginxManager.State.IsConfigurationValid}" />
-                    <TextBlock Grid.Row="2" Margin="0,0,0,0"
-                               Text="{Binding NginxManager.State.ConfigurationErrors}" />
-                </Grid>
+                <local:RunControl Margin="0,0,16,0"
+                                  DataContext="{Binding NginxManager}" />
             </TabItem>
             <TabItem Header="Frontend">
                 <ScrollViewer Margin="0,8,0,0" Padding="0,10,16,10">

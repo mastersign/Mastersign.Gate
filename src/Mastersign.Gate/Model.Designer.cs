@@ -22,6 +22,15 @@ namespace Mastersign.Gate
             this.IsChanged = false;
         }
         
+        [OnDeserialized]
+        internal void AfterDeserializingCore(StreamingContext serializationContext)
+        {
+            if (!ReferenceEquals(_setup, null))
+            {
+                _setup.PropertyChanged += this.SetupPropertyChangedHandler;
+            }
+        }
+        
         #region Change Tracking
         
         public event PropertyChangedEventHandler PropertyChanged;
@@ -55,6 +64,10 @@ namespace Mastersign.Gate
         
         public virtual void AcceptChanges()
         {
+            if (!ReferenceEquals(_setup, null))
+            {
+                _setup.AcceptChanges();
+            }
             this.IsChanged = false;
         }
         
@@ -182,6 +195,14 @@ namespace Mastersign.Gate
             this.OnPropertyChanged(@"Setup");
         }
         
+        private void SetupPropertyChangedHandler(object sender, PropertyChangedEventArgs ea)
+        {
+            if (!string.Equals(ea.PropertyName, @"IsChanged"))
+            {
+                this.OnSetupChanged();
+            }
+        }
+        
         public virtual Setup Setup
         {
             get { return _setup; }
@@ -191,7 +212,15 @@ namespace Mastersign.Gate
                 {
                     return;
                 }
+                if (!ReferenceEquals(_setup, null))
+                {
+                    _setup.PropertyChanged -= this.SetupPropertyChangedHandler;
+                }
                 _setup = value;
+                if (!ReferenceEquals(_setup, null))
+                {
+                    _setup.PropertyChanged += this.SetupPropertyChangedHandler;
+                }
                 this.OnSetupChanged();
             }
         }
@@ -209,6 +238,15 @@ namespace Mastersign.Gate
             this.Initialize();
             
             this.IsChanged = false;
+        }
+        
+        [OnDeserialized]
+        internal void AfterDeserializingSetup(StreamingContext serializationContext)
+        {
+            if (!ReferenceEquals(_server, null))
+            {
+                _server.PropertyChanged += this.ServerPropertyChangedHandler;
+            }
         }
         
         #region Change Tracking
@@ -244,6 +282,10 @@ namespace Mastersign.Gate
         
         public virtual void AcceptChanges()
         {
+            if (!ReferenceEquals(_server, null))
+            {
+                _server.AcceptChanges();
+            }
             this.IsChanged = false;
         }
         
@@ -440,6 +482,14 @@ namespace Mastersign.Gate
             this.OnPropertyChanged(@"Server");
         }
         
+        private void ServerPropertyChangedHandler(object sender, PropertyChangedEventArgs ea)
+        {
+            if (!string.Equals(ea.PropertyName, @"IsChanged"))
+            {
+                this.OnServerChanged();
+            }
+        }
+        
         public virtual Server Server
         {
             get { return _server; }
@@ -449,7 +499,15 @@ namespace Mastersign.Gate
                 {
                     return;
                 }
+                if (!ReferenceEquals(_server, null))
+                {
+                    _server.PropertyChanged -= this.ServerPropertyChangedHandler;
+                }
                 _server = value;
+                if (!ReferenceEquals(_server, null))
+                {
+                    _server.PropertyChanged += this.ServerPropertyChangedHandler;
+                }
                 this.OnServerChanged();
             }
         }
@@ -470,6 +528,26 @@ namespace Mastersign.Gate
             this.Initialize();
             
             this.IsChanged = false;
+        }
+        
+        [OnDeserialized]
+        internal void AfterDeserializingServer(StreamingContext serializationContext)
+        {
+            if (!ReferenceEquals(_httpsCertificate, null))
+            {
+                _httpsCertificate.PropertyChanged += this.HttpsCertificatePropertyChangedHandler;
+            }
+            if (!ReferenceEquals(_services, null))
+            {
+                _services.CollectionChanged += this.ServicesCollectionChangedHandler;
+                foreach (Service item in _services)
+                {
+                    if (!ReferenceEquals(item, null))
+                    {
+                        item.PropertyChanged += this.ServicesItemPropertyChanged;
+                    }
+                }
+            }
         }
         
         #region Change Tracking
@@ -505,6 +583,20 @@ namespace Mastersign.Gate
         
         public virtual void AcceptChanges()
         {
+            if (!ReferenceEquals(_httpsCertificate, null))
+            {
+                _httpsCertificate.AcceptChanges();
+            }
+            if (!ReferenceEquals(_services, null))
+            {
+                foreach (Service item in _services)
+                {
+                    if (!ReferenceEquals(item, null))
+                    {
+                        item.AcceptChanges();
+                    }
+                }
+            }
             this.IsChanged = false;
         }
         
@@ -707,6 +799,14 @@ namespace Mastersign.Gate
             this.OnPropertyChanged(@"HttpsCertificate");
         }
         
+        private void HttpsCertificatePropertyChangedHandler(object sender, PropertyChangedEventArgs ea)
+        {
+            if (!string.Equals(ea.PropertyName, @"IsChanged"))
+            {
+                this.OnHttpsCertificateChanged();
+            }
+        }
+        
         public virtual Certificate HttpsCertificate
         {
             get { return _httpsCertificate; }
@@ -716,7 +816,15 @@ namespace Mastersign.Gate
                 {
                     return;
                 }
+                if (!ReferenceEquals(_httpsCertificate, null))
+                {
+                    _httpsCertificate.PropertyChanged -= this.HttpsCertificatePropertyChangedHandler;
+                }
                 _httpsCertificate = value;
+                if (!ReferenceEquals(_httpsCertificate, null))
+                {
+                    _httpsCertificate.PropertyChanged += this.HttpsCertificatePropertyChangedHandler;
+                }
                 this.OnHttpsCertificateChanged();
             }
         }
@@ -740,6 +848,36 @@ namespace Mastersign.Gate
             this.OnPropertyChanged(@"Services");
         }
         
+        private void ServicesItemPropertyChanged(object sender, EventArgs ea)
+        {
+            this.OnServicesChanged();
+        }
+        
+        private void ServicesCollectionChangedHandler(object sender, global::System.Collections.Specialized.NotifyCollectionChangedEventArgs ea)
+        {
+            if (!ReferenceEquals(ea.OldItems, null))
+            {
+                foreach (Service item in ea.OldItems)
+                {
+                    if (!ReferenceEquals(item, null))
+                    {
+                        item.PropertyChanged -= this.ServicesItemPropertyChanged;
+                    }
+                }
+            }
+            this.OnServicesChanged();
+            if (!ReferenceEquals(ea.NewItems, null))
+            {
+                foreach (Service item in ea.NewItems)
+                {
+                    if (!ReferenceEquals(item, null))
+                    {
+                        item.PropertyChanged += this.ServicesItemPropertyChanged;
+                    }
+                }
+            }
+        }
+        
         public virtual global::System.Collections.ObjectModel.ObservableCollection<Service> Services
         {
             get { return _services; }
@@ -749,7 +887,15 @@ namespace Mastersign.Gate
                 {
                     return;
                 }
+                if (!ReferenceEquals(_services, null))
+                {
+                    _services.CollectionChanged -= this.ServicesCollectionChangedHandler;
+                }
                 _services = value;
+                if (!ReferenceEquals(_services, null))
+                {
+                    _services.CollectionChanged += this.ServicesCollectionChangedHandler;
+                }
                 this.OnServicesChanged();
             }
         }

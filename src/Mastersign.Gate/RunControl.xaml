@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="Mastersign.Gate.RunControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:local="clr-namespace:Mastersign.Gate"
+             mc:Ignorable="d" 
+             d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type local:NginxManager}}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Controls:ToggleSwitch Grid.RowSpan="2" Margin="20"
+                               HorizontalAlignment="Center" VerticalAlignment="Top"
+                               OffLabel="Stopped" OnLabel="Started"
+                               IsChecked="{Binding State.IsServerRunning}" />
+        <CheckBox Grid.Row="0" Grid.Column="1"
+                  IsChecked="{Binding State.IsConfigurationReady}"
+                  IsEnabled="False"
+                  Content="configuration ready" />
+        <CheckBox Grid.Row="1" Grid.Column="1"
+                  IsChecked="{Binding State.IsConfigurationValid}"
+                  IsEnabled="False"
+                  Content="configuration valid" />
+        <Grid Grid.Row="2" Grid.ColumnSpan="2"
+              Controls:VisibilityHelper.IsVisible="{Binding State.IsServerRunning}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Margin="0,0,10,6"
+                   HorizontalAlignment="Right" VerticalAlignment="Top"
+                   Controls:VisibilityHelper.IsVisible="{Binding Core.Setup.Server.UseHttp}"
+                   Content="HTTP URL" />
+            <Label Grid.Row="0" Grid.Column="1" Margin="0,0,0,6"
+                   Controls:VisibilityHelper.IsVisible="{Binding Core.Setup.Server.UseHttp}"
+                   VerticalAlignment="Top">
+                <Hyperlink NavigateUri="{Binding State.HttpFrontendUrl}" Click="HttpFrontendUrl_Click">
+                    <TextBlock Text="{Binding State.HttpFrontendUrl}" />
+                </Hyperlink>
+            </Label>
+            <Button Grid.Row="0" Grid.Column="2" Margin="10,0,0,6" Padding="10,4,10,6"
+                    Controls:VisibilityHelper.IsVisible="{Binding Core.Setup.Server.UseHttp}"
+                    Style="{StaticResource SquareButtonStyle}"
+                    Click="CopyHttpFrontendUrl_Handler"
+                    Content="Copy" />
+
+            <Label Grid.Row="1" Grid.Column="0" Margin="0,0,10,6"
+                   HorizontalAlignment="Right" VerticalAlignment="Top"
+                   Controls:VisibilityHelper.IsVisible="{Binding Core.Setup.Server.UseHttps}"
+                   Content="HTTPS URL" />
+            <Label Grid.Row="1" Grid.Column="1" Margin="0,0,0,6"
+                   VerticalAlignment="Top"
+                   Controls:VisibilityHelper.IsVisible="{Binding Core.Setup.Server.UseHttps}">
+                <Hyperlink NavigateUri="{Binding State.HttpsFrontendUrl}" Click="HttpsFrontendUrl_Click">
+                    <TextBlock Text="{Binding State.HttpsFrontendUrl}" />
+                </Hyperlink>
+            </Label>
+            <Button Grid.Row="1" Grid.Column="2" Margin="10,0,0,6" Padding="10,4,10,6"
+                    Style="{StaticResource SquareButtonStyle}"
+                    Controls:VisibilityHelper.IsVisible="{Binding Core.Setup.Server.UseHttps}"
+                    Click="CopyHttpsFrontendUrl_Handler"
+                    Content="Copy" />
+        </Grid>
+    </Grid>
+</UserControl>

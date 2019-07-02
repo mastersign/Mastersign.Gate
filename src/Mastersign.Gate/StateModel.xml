@@ -33,8 +33,14 @@
       <Property name="FoundInternalExecutable" type="bool" />
       <Property name="InternalVersion" />
 
+      <Property name="IsConfigurationReady" type="bool" />
+
       <Property name="IsConfigurationValid" type="bool" />
       <Property name="ConfigurationErrors" />
+
+      <Property name="IsServerRunning" type="bool" />
+      <Property name="HttpFrontendUrl" />
+      <Property name="HttpsFrontendUrl" />
     </Class>
     
   </Types>

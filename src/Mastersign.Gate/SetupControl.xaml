@@ -46,9 +46,9 @@
         </StackPanel>
 
         <Label Grid.Row="1" Content="Project File" Margin="0,0,10,6" />
-        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
+        <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,0,10,6"
                                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                                 Content="{Binding ProjectFile}"/>
+                                 Content="{Binding ProjectFilePath}"/>
 
         <Label Content="Project Name" Grid.Row="2" Margin="0,0,10,6" />
         <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"

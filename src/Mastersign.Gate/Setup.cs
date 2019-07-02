@@ -18,6 +18,12 @@ namespace Mastersign.Gate
         }
 
         [YamlIgnore]
+        public Core Core { get; set; }
+
+        [YamlIgnore]
+        public string ConfigFile => "nginx.conf";
+
+        [YamlIgnore]
         public string ProcessIdFile => Path.Combine(LogDirectory, "nginx.pid");
 
         [YamlIgnore]
@@ -54,17 +60,6 @@ namespace Mastersign.Gate
                     )
                 )
             );
-        }
-
-        public async Task WriteNginxConfig(string configFilePath)
-        {
-            using (var w = new StreamWriter(configFilePath, false, new UTF8Encoding(false)))
-            {
-                foreach (var line in NginxConfig())
-                {
-                    await w.WriteLineAsync(line);
-                }
-            }
         }
     }
 }

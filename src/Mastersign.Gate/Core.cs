@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,25 +12,57 @@ namespace Mastersign.Gate
 {
     partial class Core
     {
+        private static readonly string[] DEFAULT_PROJECT_FILES = new[] { "mgate.yml", "mgate.yaml" };
+
         private void Initialize()
         {
             SetupChanged += Core_SetupChanged;
-            Setup = new Setup();
+            Setup = new Setup { Core = this };
             NginxManager = new NginxManager(this);
         }
 
+        public void Start(string[] cliArgs)
+        {
+            if (cliArgs.Length == 0)
+            {
+                var defaultProject = DEFAULT_PROJECT_FILES
+                    .Select(fileName => Path.Combine(Environment.CurrentDirectory, fileName))
+                    .FirstOrDefault(path => File.Exists(path));
+                if (defaultProject != null) OpenProjectFile(defaultProject);
+            }
+        }
+
         public string ProgrammDirectory
-            => System.IO.Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
+            => Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
 
         public string AbsoluteResourceDirectory
-            => System.IO.Path.IsPathRooted(ResourceDirectory)
+            => Path.IsPathRooted(ResourceDirectory)
                 ? ResourceDirectory
-                : System.IO.Path.Combine(ProgrammDirectory, ResourceDirectory);
+                : Path.Combine(ProgrammDirectory, ResourceDirectory);
 
         public string AbsoluteBinaryDirectory
-            => System.IO.Path.IsPathRooted(BinaryDirectory)
+            => Path.IsPathRooted(BinaryDirectory)
                 ? BinaryDirectory
-                : System.IO.Path.Combine(ProgrammDirectory, BinaryDirectory);
+                : Path.Combine(ProgrammDirectory, BinaryDirectory);
+
+        public string AbsoluteProjectDirectory
+            => string.IsNullOrWhiteSpace(ProjectFilePath)
+                ? Environment.CurrentDirectory
+                : Path.GetDirectoryName(ProjectFilePath);
+
+        public string AbsoluteConfigDirectory
+            => string.IsNullOrWhiteSpace(Setup.Directory)
+                ? AbsoluteProjectDirectory
+                : Path.IsPathRooted(Setup.Directory)
+                    ? Setup.Directory
+                    : Path.Combine(AbsoluteProjectDirectory, Setup.Directory);
+
+        public string AbsoluteConfigPath(string path)
+            => string.IsNullOrWhiteSpace(path)
+                ? AbsoluteConfigDirectory
+                : Path.IsPathRooted(path)
+                    ? path
+                    : Path.Combine(AbsoluteConfigDirectory, path);
 
         public NginxManager NginxManager { get; protected set; }
 

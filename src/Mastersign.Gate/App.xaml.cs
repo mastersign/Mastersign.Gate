@@ -23,7 +23,7 @@ namespace Mastersign.Gate
             ThemeManager.IsAutomaticWindowsAppModeSettingSyncEnabled = true;
 
             Core = new Core();
-            // e.Args
+            Core.Start(e.Args);
         }
     }
 }

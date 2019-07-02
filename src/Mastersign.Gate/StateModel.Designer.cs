@@ -41,8 +41,12 @@ namespace Mastersign.Gate
                 (Environment.NewLine + @"    CheckingInternalExecutable = " + _checkingInternalExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    FoundInternalExecutable = " + _foundInternalExecutable.ToString(formatProvider).Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    InternalVersion = " + (!ReferenceEquals(_internalVersion, null) ? _internalVersion.ToString(formatProvider) : @"null").Replace("\n", "\n    ")) + 
+                (Environment.NewLine + @"    IsConfigurationReady = " + _isConfigurationReady.ToString(formatProvider).Replace("\n", "\n    ")) + 
                 (Environment.NewLine + @"    IsConfigurationValid = " + _isConfigurationValid.ToString(formatProvider).Replace("\n", "\n    ")) + 
-                (Environment.NewLine + @"    ConfigurationErrors = " + (!ReferenceEquals(_configurationErrors, null) ? _configurationErrors.ToString(formatProvider) : @"null").Replace("\n", "\n    "))));
+                (Environment.NewLine + @"    ConfigurationErrors = " + (!ReferenceEquals(_configurationErrors, null) ? _configurationErrors.ToString(formatProvider) : @"null").Replace("\n", "\n    ")) + 
+                (Environment.NewLine + @"    IsServerRunning = " + _isServerRunning.ToString(formatProvider).Replace("\n", "\n    ")) + 
+                (Environment.NewLine + @"    HttpFrontendUrl = " + (!ReferenceEquals(_httpFrontendUrl, null) ? _httpFrontendUrl.ToString(formatProvider) : @"null").Replace("\n", "\n    ")) + 
+                (Environment.NewLine + @"    HttpsFrontendUrl = " + (!ReferenceEquals(_httpsFrontendUrl, null) ? _httpsFrontendUrl.ToString(formatProvider) : @"null").Replace("\n", "\n    "))));
         }
         
         #endregion
@@ -574,6 +578,38 @@ namespace Mastersign.Gate
         
         #endregion
         
+        #region Property IsConfigurationReady
+        
+        private bool _isConfigurationReady;
+        
+        public event EventHandler IsConfigurationReadyChanged;
+        
+        protected virtual void OnIsConfigurationReadyChanged()
+        {
+            EventHandler handler = IsConfigurationReadyChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"IsConfigurationReady");
+        }
+        
+        public virtual bool IsConfigurationReady
+        {
+            get { return _isConfigurationReady; }
+            set
+            {
+                if ((value == _isConfigurationReady))
+                {
+                    return;
+                }
+                _isConfigurationReady = value;
+                this.OnIsConfigurationReadyChanged();
+            }
+        }
+        
+        #endregion
+        
         #region Property IsConfigurationValid
         
         private bool _isConfigurationValid;
@@ -633,6 +669,102 @@ namespace Mastersign.Gate
                 }
                 _configurationErrors = value;
                 this.OnConfigurationErrorsChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property IsServerRunning
+        
+        private bool _isServerRunning;
+        
+        public event EventHandler IsServerRunningChanged;
+        
+        protected virtual void OnIsServerRunningChanged()
+        {
+            EventHandler handler = IsServerRunningChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"IsServerRunning");
+        }
+        
+        public virtual bool IsServerRunning
+        {
+            get { return _isServerRunning; }
+            set
+            {
+                if ((value == _isServerRunning))
+                {
+                    return;
+                }
+                _isServerRunning = value;
+                this.OnIsServerRunningChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property HttpFrontendUrl
+        
+        private string _httpFrontendUrl;
+        
+        public event EventHandler HttpFrontendUrlChanged;
+        
+        protected virtual void OnHttpFrontendUrlChanged()
+        {
+            EventHandler handler = HttpFrontendUrlChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"HttpFrontendUrl");
+        }
+        
+        public virtual string HttpFrontendUrl
+        {
+            get { return _httpFrontendUrl; }
+            set
+            {
+                if (string.Equals(value, _httpFrontendUrl))
+                {
+                    return;
+                }
+                _httpFrontendUrl = value;
+                this.OnHttpFrontendUrlChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property HttpsFrontendUrl
+        
+        private string _httpsFrontendUrl;
+        
+        public event EventHandler HttpsFrontendUrlChanged;
+        
+        protected virtual void OnHttpsFrontendUrlChanged()
+        {
+            EventHandler handler = HttpsFrontendUrlChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"HttpsFrontendUrl");
+        }
+        
+        public virtual string HttpsFrontendUrl
+        {
+            get { return _httpsFrontendUrl; }
+            set
+            {
+                if (string.Equals(value, _httpsFrontendUrl))
+                {
+                    return;
+                }
+                _httpsFrontendUrl = value;
+                this.OnHttpsFrontendUrlChanged();
             }
         }
         

@@ -31,6 +31,7 @@ namespace Mastersign.Gate
             Core = core;
             State = new NginxManagerState();
             State.PropertyChanged += State_Changed;
+            State.IsServerRunningChanged += ServerRunningStateChanged;
         }
 
         private void State_Changed(object sender, PropertyChangedEventArgs e)
@@ -276,33 +277,55 @@ namespace Mastersign.Gate
             }
         }
 
-        public async Task SetupConfigDirectory(string configDir, string logDir, string certDir, Setup setup)
+        public async Task SetupConfigDirectory()
         {
+            var configDir = Core.AbsoluteConfigDirectory;
+            var logDir = Core.AbsoluteConfigPath(Core.Setup.LogDirectory);
+            var certDir = Core.AbsoluteConfigPath(Core.Setup.CertificateDirectory);
             await Task.Run(() =>
             {
                 if (!Directory.Exists(configDir)) Directory.CreateDirectory(configDir);
                 var tempDir = Path.Combine(configDir, "temp");
                 if (!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
                 if (!Directory.Exists(logDir)) Directory.CreateDirectory(logDir);
-                if (setup.Server.UseHttps)
+                if (Core.Setup.Server.UseHttps)
                 {
                     if (!Directory.Exists(certDir)) Directory.CreateDirectory(certDir);
+                    var certFile = Path.Combine(certDir, "self-signed.pem");
+                    var keyFile = Path.Combine(certDir, "self-signed.key");
+                    if (!File.Exists(certFile) || !File.Exists(keyFile))
+                    {
+                        CertificateBuilder.CreateSelfSignedCertificate(
+                            Core.Setup.Server.HttpsCertificate, certFile, keyFile);
+                    }
                 }
             });
-            await setup.WriteNginxConfig(Path.Combine(configDir, "nginx.conf"));
             await WriteResourceFile(Path.Combine(configDir, "mime.types"), "mime.types");
+            await WriteNginxConfig();
+            State.IsConfigurationReady = true;
         }
 
-        public async Task CheckConfigDirectory(string configDir)
+        private async Task WriteNginxConfig()
+        {
+            using (var w = new StreamWriter(Core.AbsoluteConfigPath(Core.Setup.ConfigFile), false, new UTF8Encoding(false)))
+            {
+                foreach (var line in Core.Setup.NginxConfig())
+                {
+                    await w.WriteLineAsync(line);
+                }
+            }
+        }
+
+        public async Task<bool> CheckConfigDirectory()
         {
             if (State.SelectedExecutablePath == null)
             {
                 throw new InvalidOperationException("No nginx executable selected.");
             }
-            var configFilePath = Path.Combine(configDir, "nginx.conf");
+            var configFilePath = Core.AbsoluteConfigPath("nginx.conf");
             var pi = new ProcessStartInfo(State.SelectedExecutablePath, $"-t -q -c \"{configFilePath}\"")
             {
-                WorkingDirectory = configDir,
+                WorkingDirectory = Core.AbsoluteConfigDirectory,
                 UseShellExecute = false,
                 CreateNoWindow = true,
                 RedirectStandardError = true,
@@ -318,7 +341,115 @@ namespace Mastersign.Gate
             await Task.Run(p.WaitForExit);
             State.ConfigurationErrors =
                 errors.Count > 0 ? string.Join(Environment.NewLine, errors) : null;
-            State.IsConfigurationValid = p.ExitCode == 0;
+            var valid = p.ExitCode == 0;
+            State.IsConfigurationValid = valid;
+            return valid;
         }
+
+        private Process nginxServer;
+        private bool stopping;
+
+        private void ServerRunningStateChanged(object sender, EventArgs e)
+        {
+            if (State.IsServerRunning && nginxServer == null)
+                _ = StartServer();
+            else if (!State.IsServerRunning && nginxServer != null)
+                StopServer();
+        }
+
+        private Process RunNginx(string args = null)
+        {
+            var configFilePath = Core.AbsoluteConfigPath(Core.Setup.ConfigFile);
+            args = $"-c \"{configFilePath}\"" + (args != null ? " " + args : string.Empty);
+            var si = new ProcessStartInfo(State.SelectedExecutablePath, args)
+            {
+                WorkingDirectory = Core.AbsoluteConfigDirectory,
+                CreateNoWindow = true,
+                UseShellExecute = false,
+            };
+            return Process.Start(si);
+        }
+
+        private void UpdateFrontendUrls()
+        {
+            var server = Core.Setup.Server;
+            if (server.UseHttp)
+            {
+                State.HttpFrontendUrl = "http://"
+                    + (string.IsNullOrWhiteSpace(server.Host) ? "localhost" : server.Host)
+                    + (server.HttpPort == 80 ? string.Empty : ":" + server.HttpPort)
+                    + "/";
+            }
+            if (server.UseHttps)
+            {
+                State.HttpsFrontendUrl = "https://"
+                    + (string.IsNullOrWhiteSpace(server.Host) ? "localhost" : server.Host)
+                    + (server.HttpsPort == 443 ? string.Empty : ":" + server.HttpsPort)
+                    + "/";
+            }
+        }
+
+        public async Task StartServer()
+        {
+            if (State.SelectedExecutablePath == null) return;
+            if (nginxServer != null) return;
+            stopping = false;
+            State.IsConfigurationReady = false;
+            State.IsConfigurationValid = false;
+            try
+            {
+                await SetupConfigDirectory();
+            }
+            catch (Exception ex)
+            {
+                State.ConfigurationErrors = ex.RecursiveMessage();
+                return;
+            }
+            if (!await CheckConfigDirectory()) return;
+
+            UpdateFrontendUrls();
+            nginxServer = RunNginx();
+            while (nginxServer != null && !nginxServer.HasExited)
+            {
+                await Task.Delay(500);
+            }
+            StopServer();
+        }
+
+        public async void StopServer()
+        {
+            if (nginxServer == null) return;
+            if (stopping) return;
+            stopping = true;
+            // signal nginx master process via inter-process-call
+            RunNginx("-s stop");
+            var exited = await Task.Run(() => nginxServer.WaitForExit(5000));
+            if (!exited)
+            {
+                try
+                {
+                    // kill the master process hard
+                    // worker processes are not covered!
+                    nginxServer.Kill();
+                }
+                catch (Win32Exception)
+                {
+                    // process is currently exiting
+                }
+                catch (InvalidOperationException)
+                {
+                    // process has already exited
+                }
+                await Task.Run(nginxServer.WaitForExit);
+            }
+            nginxServer = null;
+            stopping = false;
+            State.IsServerRunning = false;
+            State.HttpFrontendUrl = null;
+            State.HttpsFrontendUrl = null;
+            State.IsConfigurationReady = false;
+            State.IsConfigurationValid = false;
+        }
+
     }
 }
