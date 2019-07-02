@@ -301,6 +301,7 @@ namespace Mastersign.Gate
                 }
             });
             await WriteResourceFile(Path.Combine(configDir, "mime.types"), "mime.types");
+            await PrepareDefaultWwwRoot();
             await WriteNginxConfig();
             State.IsConfigurationReady = true;
         }
@@ -314,6 +315,31 @@ namespace Mastersign.Gate
                     await w.WriteLineAsync(line);
                 }
             }
+        }
+
+        private async Task PrepareDefaultWwwRoot()
+        {
+            var configDir = Core.AbsoluteConfigDirectory;
+            var wwwDir = Path.Combine(configDir, "www");
+            await Task.Run(() =>
+            {
+                if (!Directory.Exists(wwwDir))
+                {
+                    Directory.CreateDirectory(wwwDir);
+                    File.WriteAllText(Path.Combine(wwwDir, "index.html"),
+                        "<!DOCTYPE html>" + Environment.NewLine +
+                        "<html lang=\"en\">" + Environment.NewLine +
+                        "<head>" + Environment.NewLine +
+                        "  <meta charset=\"UTF-8\">" + Environment.NewLine +
+                        "  <title>Mastersign Gate</title>" + Environment.NewLine +
+                        "</head>" + Environment.NewLine +
+                        "<body>" + Environment.NewLine +
+                        "  <h1>Mastersign Gate</h1>" + Environment.NewLine +
+                        "</body>" + Environment.NewLine +
+                        "</html>",
+                        new UTF8Encoding(false));
+                }
+            });
         }
 
         public async Task<bool> CheckConfigDirectory()

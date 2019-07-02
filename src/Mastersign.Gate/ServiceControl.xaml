@@ -8,9 +8,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="600"
              d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeService}}">
+    <UserControl.Resources>
+        <local:NegationConverter x:Key="NegationConverter"/>
+        <local:BoolToVisibilityConverter x:Key="VisibleFromBool" Unvisible="Collapsed" />
+        <local:BoolToVisibilityConverter x:Key="CollapsedFromBool" Unvisible="Collapsed" Invert="True" />
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="130"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -21,9 +26,12 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Label x:Name="lblName" 
+        <Label x:Name="lblName"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
                Content="Name"/>
         <TextBox x:Name="txtName" Grid.Column="1" Grid.ColumnSpan="2"
@@ -35,17 +43,51 @@
         <TextBox x:Name="txtRoute" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2"
                  Margin="0,0,0,6"
                  TextWrapping="NoWrap" Text="{Binding Route}"/>
-        <Label x:Name="lblUrl" Grid.Row="2"
+
+        <Label x:Name="lblServiceType" Grid.Row="2"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
-               Content="Service Url"/>
-        <TextBox x:Name="txtUrl" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2"
+               Content="Service Type"/>
+        <StackPanel Grid.Row="2" Grid.Column="1"
+                    Orientation="Horizontal">
+            <RadioButton Margin="0,0,10,6" Content="Static Files"
+                         IsChecked="{Binding IsProxy, Converter={StaticResource NegationConverter}}"/>
+            <RadioButton Margin="0,0,10,6" Content="Reverse Proxy"
+                         IsChecked="{Binding IsProxy}" />
+        </StackPanel>
+
+        <Label x:Name="lblRootDirectory" Grid.Row="3"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Visibility="{Binding IsProxy, Converter={StaticResource CollapsedFromBool}}"
+               Content="WWW Root"/>
+        <TextBox x:Name="txtRootDirectory" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
                  Margin="0,0,0,6"
+                 Visibility="{Binding IsProxy, Converter={StaticResource CollapsedFromBool}}"
+                 TextWrapping="Wrap" Text="{Binding RootDirectory}"/>
+
+        <Label x:Name="lblIndexFiles" Grid.Row="4"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Visibility="{Binding IsProxy, Converter={StaticResource CollapsedFromBool}}"
+               Content="Index Files"/>
+        <TextBox x:Name="txtIndexFiles" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2"
+                 Margin="0,0,0,6"
+                 Visibility="{Binding IsProxy, Converter={StaticResource CollapsedFromBool}}"
+                 TextWrapping="Wrap" Text="{Binding IndexFiles}"/>
+
+        <Label x:Name="lblUrl" Grid.Row="5"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}"
+               Content="Service Url"/>
+        <TextBox x:Name="txtUrl" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
+                 Margin="0,0,0,6"
+                 Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}"
                  TextWrapping="Wrap" Text="{Binding Url}"/>
         
-        <Label x:Name="lblRewrite" Grid.Row="3"
+        <Label x:Name="lblRewrite" Grid.Row="6"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}"
                Content="Rewrite URLs"/>
-        <StackPanel Orientation="Horizontal" Grid.Row="3" Grid.Column="1">
+        <StackPanel Orientation="Horizontal" Grid.Row="6" Grid.Column="1"
+                    Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}">
             <CheckBox x:Name="chkUrlRewrite"  Grid.Column="0"
                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,2,10,6"
                   Content="Request" IsChecked="{Binding UrlRewrite}"/>
@@ -60,19 +102,23 @@
                   Content="JS" IsChecked="{Binding JavaScriptContentRewrite}" IsEnabled="{Binding UrlRewrite}"/>
         </StackPanel>
 
-        <Label x:Name="lblHeaders" Grid.Row="4"
+        <Label x:Name="lblHeaders" Grid.Row="7"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}"
                Content="Headers"/>
-        <StackPanel Orientation="Horizontal" Grid.Row="4" Grid.Column="1">
+        <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="1"
+                    Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}">
             <CheckBox x:Name="chkHeaderXForwardedFor" Margin="0,2,10,6"
-                  Content="X-Forewarded-For" IsChecked="{Binding HeaderXForwardedFor}"/>
+                      Content="X-Forewarded-For" IsChecked="{Binding HeaderXForwardedFor}"/>
         </StackPanel>
         
-        <Label x:Name="lblSupportWebSockets" Grid.Row="5"
+        <Label x:Name="lblSupportWebSockets" Grid.Row="8"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}"
                Content="Support WebSockets"/>
-        <CheckBox x:Name="chkSupportWebSockets" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2"
+        <CheckBox x:Name="chkSupportWebSockets" Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2"
                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,2,0,6"
+                  Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}"
                   IsChecked="{Binding SupportWebSockets}"/>
 
     </Grid>

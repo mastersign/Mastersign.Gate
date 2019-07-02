@@ -1232,6 +1232,8 @@ namespace Mastersign.Gate
         {
             this._name = DEF_NAME;
             this._route = DEF_ROUTE;
+            this._rootDirectory = DEF_ROOTDIRECTORY;
+            this._indexFiles = DEF_INDEXFILES;
             this._url = DEF_URL;
             this._headerXForwardedFor = DEF_HEADERXFORWARDEDFOR;
             
@@ -1343,6 +1345,111 @@ namespace Mastersign.Gate
                 }
                 _route = value;
                 this.OnRouteChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property IsProxy
+        
+        private bool _isProxy;
+        
+        public event EventHandler IsProxyChanged;
+        
+        protected virtual void OnIsProxyChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = IsProxyChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"IsProxy");
+        }
+        
+        public virtual bool IsProxy
+        {
+            get { return _isProxy; }
+            set
+            {
+                if ((value == _isProxy))
+                {
+                    return;
+                }
+                _isProxy = value;
+                this.OnIsProxyChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property RootDirectory
+        
+        private string _rootDirectory;
+        
+        public event EventHandler RootDirectoryChanged;
+        
+        protected virtual void OnRootDirectoryChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = RootDirectoryChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"RootDirectory");
+        }
+        
+        private const string DEF_ROOTDIRECTORY = @"www";
+        
+        [DefaultValue(DEF_ROOTDIRECTORY)]
+        public virtual string RootDirectory
+        {
+            get { return _rootDirectory; }
+            set
+            {
+                if (string.Equals(value, _rootDirectory))
+                {
+                    return;
+                }
+                _rootDirectory = value;
+                this.OnRootDirectoryChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property IndexFiles
+        
+        private string _indexFiles;
+        
+        public event EventHandler IndexFilesChanged;
+        
+        protected virtual void OnIndexFilesChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = IndexFilesChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"IndexFiles");
+        }
+        
+        private const string DEF_INDEXFILES = @"index.html index.htm default.html default.htm";
+        
+        [DefaultValue(DEF_INDEXFILES)]
+        public virtual string IndexFiles
+        {
+            get { return _indexFiles; }
+            set
+            {
+                if (string.Equals(value, _indexFiles))
+                {
+                    return;
+                }
+                _indexFiles = value;
+                this.OnIndexFilesChanged();
             }
         }
         

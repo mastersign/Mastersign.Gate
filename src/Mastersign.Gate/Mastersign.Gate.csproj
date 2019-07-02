@@ -213,5 +213,8 @@
       <LastGenOutput>StateModel.Designer.cs</LastGenOutput>
     </Resource>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="WpfHelper.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

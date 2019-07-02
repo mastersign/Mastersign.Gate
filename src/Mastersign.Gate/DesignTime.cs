@@ -30,8 +30,8 @@ namespace Mastersign.Gate
         public DesignTimeServer()
         {
             HttpsCertificate = new DesignTimeCertificate();
-            Services.Add(new DesignTimeService { Name = "API", Route = "/api/", Url = "http://localhost:8081", SupportWebSockets = true });
-            Services.Add(new DesignTimeService { Name = "Web", Route = "/", Url = "http://localhost:8080" });
+            Services.Add(new DesignTimeService { Name = "API", Route = "/api/", IsProxy=true, Url = "http://localhost:8081", SupportWebSockets = true });
+            Services.Add(new DesignTimeService { Name = "Web", Route = "/" });
         }
     }
 
@@ -52,6 +52,7 @@ namespace Mastersign.Gate
     {
         public DesignTimeService()
         {
+            IsProxy = true;
             UrlRewrite = true;
             HtmlContentRewrite = true;
         }

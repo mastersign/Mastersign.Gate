@@ -30,6 +30,10 @@ namespace Mastersign.Gate
                     .FirstOrDefault(path => File.Exists(path));
                 if (defaultProject != null) OpenProjectFile(defaultProject);
             }
+            else if (cliArgs.Length == 1 && File.Exists(cliArgs[0]))
+            {
+                OpenProjectFile(cliArgs[0]);
+            }
         }
 
         public string ProgrammDirectory

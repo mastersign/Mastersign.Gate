@@ -84,6 +84,17 @@
       <Property name="Route">
         <DefaultValue>/service/</DefaultValue>
       </Property>
+      <Property name="IsProxy" type="bool" />
+      
+      <!-- Static Files Properties -->
+      <Property name="RootDirectory">
+        <DefaultValue>www</DefaultValue>
+      </Property>
+      <Property name="IndexFiles">
+        <DefaultValue>index.html index.htm default.html default.htm</DefaultValue>
+      </Property>
+      
+      <!-- Proxy Properties -->
       <Property name="Url">
         <DefaultValue>http://127.0.0.1:8080/</DefaultValue>
       </Property>

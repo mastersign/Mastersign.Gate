@@ -18,6 +18,12 @@ namespace Mastersign.Gate
             HttpsCertificate = new Certificate();
             ServicesChanged += ServicesChanged_Handler;
             PropertyChanged += PropertyChanged_Handler;
+            Services.Add(new Service {
+                Name="Root",
+                Route="/",
+                IsProxy = false,
+                RootDirectory="www",
+            });
         }
 
         #region Transaction Propagation to Collection
