@@ -33,16 +33,20 @@ namespace Mastersign.Gate
         public void HttpsFrontendUrl_Click(object sender, RoutedEventArgs e)
             => System.Diagnostics.Process.Start(NginxManager.State.HttpsFrontendUrl);
 
-
-
         private void CopyHttpFrontendUrl_Handler(object sender, RoutedEventArgs e)
-        {
-
-        }
+            => Clipboard.SetText(NginxManager.State.HttpFrontendUrl);
 
         private void CopyHttpsFrontendUrl_Handler(object sender, RoutedEventArgs e)
-        {
+            => Clipboard.SetText(NginxManager.State.HttpsFrontendUrl);
 
+        private async void SetupConfigDirectory_Handler(object sender, RoutedEventArgs e)
+        { 
+            await NginxManager.SetupConfigDirectory();
+            await NginxManager.CheckConfigDirectory();
+            if (NginxManager.State.IsServerRunning)
+            {
+                await NginxManager.ReloadServerConfig();
+            }
         }
     }
 }

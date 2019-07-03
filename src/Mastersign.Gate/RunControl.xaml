@@ -15,22 +15,28 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="3*" />
             <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <Controls:ToggleSwitch Grid.RowSpan="2" Margin="20"
-                               HorizontalAlignment="Center" VerticalAlignment="Top"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"
                                OffLabel="Stopped" OnLabel="Started"
                                IsChecked="{Binding State.IsServerRunning}" />
         <CheckBox Grid.Row="0" Grid.Column="1"
                   IsChecked="{Binding State.IsConfigurationReady}"
                   IsEnabled="False"
-                  Content="configuration ready" />
+                  Content="configuration ready" Grid.ColumnSpan="2" />
         <CheckBox Grid.Row="1" Grid.Column="1"
                   IsChecked="{Binding State.IsConfigurationValid}"
                   IsEnabled="False"
-                  Content="configuration valid" />
-        <Grid Grid.Row="2" Grid.ColumnSpan="2"
+                  Content="configuration valid" Grid.ColumnSpan="2" />
+        <Button Grid.Row="0" Grid.Column="2" Grid.RowSpan="2" Padding="16,8,16,10"
+                HorizontalAlignment="Center" VerticalAlignment="Center"
+                Style="{StaticResource SquareButtonStyle}"
+                Click="SetupConfigDirectory_Handler"
+                Content="Setup" />
+        <Grid Grid.Row="2" Grid.ColumnSpan="3"
               Controls:VisibilityHelper.IsVisible="{Binding State.IsServerRunning}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />

@@ -29,10 +29,24 @@ namespace Mastersign.Gate
                             : NoLines()
                       )
                     : Chain(
-                        Setting("root", FsPath(RootDirectory)),
-                        Setting("index", IndexFiles)
+                        Setting("alias", FsPath(SafeTargetDirectory)),
+                        string.IsNullOrWhiteSpace(IndexFiles) ? NoLines() : Setting("index", IndexFiles)
                       ),
                 Route);
+        }
+
+        private string SafeTargetDirectory
+        {
+            get
+            {
+                var targetDir = TargetDirectory;
+                if (!targetDir.EndsWith(new string(System.IO.Path.DirectorySeparatorChar, 1)) &&
+                    !targetDir.EndsWith(new string(System.IO.Path.AltDirectorySeparatorChar, 1)))
+                {
+                    targetDir += System.IO.Path.DirectorySeparatorChar;
+                }
+                return targetDir;
+            }
         }
     }
 }

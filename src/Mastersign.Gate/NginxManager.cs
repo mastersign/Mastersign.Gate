@@ -288,6 +288,7 @@ namespace Mastersign.Gate
                 var tempDir = Path.Combine(configDir, "temp");
                 if (!Directory.Exists(tempDir)) Directory.CreateDirectory(tempDir);
                 if (!Directory.Exists(logDir)) Directory.CreateDirectory(logDir);
+                
                 if (Core.Setup.Server.UseHttps)
                 {
                     if (!Directory.Exists(certDir)) Directory.CreateDirectory(certDir);
@@ -301,6 +302,7 @@ namespace Mastersign.Gate
                 }
             });
             await WriteResourceFile(Path.Combine(configDir, "mime.types"), "mime.types");
+            await WriteWrapperScripts();
             await PrepareDefaultWwwRoot();
             await WriteNginxConfig();
             State.IsConfigurationReady = true;
@@ -342,6 +344,23 @@ namespace Mastersign.Gate
             });
         }
 
+        private async Task WriteWrapperScripts()
+        {
+            var configDir = Core.AbsoluteConfigDirectory;
+            await Task.Run(() =>
+            {
+                File.WriteAllText(
+                    Path.Combine(configDir, "start.cmd"),
+                    $"@\"{State.SelectedExecutablePath}\" -c \"%~dp0{Core.Setup.ConfigFile}\"");
+                File.WriteAllText(
+                    Path.Combine(configDir, "reload.cmd"),
+                    $"@\"{State.SelectedExecutablePath}\" -c \"%~dp0{Core.Setup.ConfigFile}\" -s reload");
+                File.WriteAllText(
+                    Path.Combine(configDir, "stop.cmd"),
+                    $"@\"{State.SelectedExecutablePath}\" -c \"%~dp0{Core.Setup.ConfigFile}\" -s stop");
+            });
+        }
+
         public async Task<bool> CheckConfigDirectory()
         {
             if (State.SelectedExecutablePath == null)
@@ -372,6 +391,13 @@ namespace Mastersign.Gate
             return valid;
         }
 
+        public async Task<bool> ReloadServerConfig()
+        {
+            var p = RunNginx("-s reload");
+            await Task.Run(p.WaitForExit);
+            return p.ExitCode == 0;
+        }
+
         private Process nginxServer;
         private bool stopping;
 
@@ -385,6 +411,10 @@ namespace Mastersign.Gate
 
         private Process RunNginx(string args = null)
         {
+            if (State.SelectedExecutablePath == null)
+            {
+                throw new InvalidOperationException("No nginx executable selected.");
+            }
             var configFilePath = Core.AbsoluteConfigPath(Core.Setup.ConfigFile);
             args = $"-c \"{configFilePath}\"" + (args != null ? " " + args : string.Empty);
             var si = new ProcessStartInfo(State.SelectedExecutablePath, args)
@@ -415,6 +445,28 @@ namespace Mastersign.Gate
             }
         }
 
+        public async void FindRunningServer()
+        {
+            if (State.SelectedExecutablePath == null) return;
+            if (nginxServer != null) return;
+            var pidFile = Core.AbsoluteConfigPath(Core.Setup.ProcessIdFile);
+            int pid = -1;
+            await Task.Run(() =>
+            {
+                if (File.Exists(pidFile))
+                {
+                    var pidText = File.ReadAllText(pidFile);
+                    if (int.TryParse(pidText, out pid))
+                    {
+                        var proc = Process.GetProcessById(pid);
+                        nginxServer = proc;
+                        State.IsServerRunning = true;
+                        TrackExit();
+                    }
+                }
+            });
+        }
+
         public async Task StartServer()
         {
             if (State.SelectedExecutablePath == null) return;
@@ -435,6 +487,11 @@ namespace Mastersign.Gate
 
             UpdateFrontendUrls();
             nginxServer = RunNginx();
+            TrackExit();
+        }
+
+        private async void TrackExit()
+        {
             while (nginxServer != null && !nginxServer.HasExited)
             {
                 await Task.Delay(500);

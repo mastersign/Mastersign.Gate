@@ -46,7 +46,7 @@ namespace Mastersign.Gate
 
         public static IEnumerable<string> Block(string name, IEnumerable<string> content, params string[] values)
         {
-            yield return name + SPC
+            yield return name
                 + (values.Length > 0 ? SPC + string.Join(SPC, values) : string.Empty)
                 + SPC + "{";
             foreach (var line in Indent(content)) yield return line;
@@ -54,8 +54,11 @@ namespace Mastersign.Gate
         }
 
         public static string FsPath(string path)
-            => path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
+        { 
+            var result = path.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar)
                    .Replace(Path.DirectorySeparatorChar, '/');
+            return result.Contains(' ') ? "\"" + result + "\"" : result;
+        }
 
         public static string FsPath(params string[] parts)
             => FsPath(Path.Combine(parts));

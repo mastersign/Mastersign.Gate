@@ -14,6 +14,8 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -21,47 +23,67 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition />
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <Label x:Name="lblHost" Grid.Row="0" Grid.Column="0"
-               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0"
                Content="Bind IP"/>
-        <TextBox x:Name="txtHost" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3"
+        <TextBox x:Name="txtHost" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4"
                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
                  Text="{Binding Host}"/>
 
         <Label x:Name="lblHttp" Grid.Row="1" Grid.Column="0"
-               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0"
                Content="HTTP"/>
         <CheckBox x:Name="chkUseHttp" Grid.Row="1" Grid.Column="1"
-                  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,2,0,6"
+                  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,5,0,9"
                   IsChecked="{Binding UseHttp}"/>
         <Label x:Name="lblHttpPort" Grid.Row="1" Grid.Column="2"
-               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0"
                Content="Port" IsEnabled="{Binding UseHttp}"/>
         <Controls:NumericUpDown x:Name="numHttpPort" Grid.Row="1" Grid.Column="3" Width="100"
-                                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,6"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Value="{Binding HttpPort}" IsEnabled="{Binding UseHttp}"/>
 
         <Label x:Name="lblHttps" Grid.Row="2" Grid.Column="0"
-               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0"
                Content="HTTPS"/>
         <CheckBox x:Name="chkUseHttps" Grid.Row="2" Grid.Column="1"
-                  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,2,0,6"
+                  HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,5,0,9"
                   IsChecked="{Binding UseHttps}"/>
         <Label x:Name="lblHttpsPort" Grid.Row="2" Grid.Column="2"
-               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0"
                Content="Port" IsEnabled="{Binding UseHttps}"/>
         <Controls:NumericUpDown x:Name="numHttpsPort" Grid.Row="2" Grid.Column="3" Width="100"
-                                HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,0,0,6"
+                                HorizontalAlignment="Left" VerticalAlignment="Top"
                                 Value="{Binding HttpsPort}" IsEnabled="{Binding UseHttps}"/>
 
         <Label x:Name="lblHttpsCertificate" Grid.Row="3" Grid.Column="2"
-               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0"
                Content="Certificate" IsEnabled="{Binding UseHttps}"/>
         <local:CertificateControl x:Name="ctrlHttpsCertificate" Grid.Row="3" Grid.Column="3"
                                   HorizontalAlignment="Stretch" VerticalAlignment="Top"
-                                  DataContext="{Binding HttpsCertificate}" IsEnabled="{Binding UseHttps}" />
+                                  IsEnabled="{Binding UseHttps}"
+                                  DataContext="{Binding HttpsCertificate}" Grid.ColumnSpan="2" />
 
+        <Label x:Name="lblRootDirectory" Grid.Row="4"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0"
+               Content="WWW Root"/>
+        <TextBox x:Name="txtRootDirectory" Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4"
+                 Margin="0,0,0,6"
+                 TextWrapping="Wrap" Text="{Binding RootDirectory}"/>
+        <!--<Button x:Name="btnRootDirectoryBrowse" Grid.Row="4" Grid.Column="4" Margin="0,0,0,6"
+                HorizontalAlignment="Right" VerticalAlignment="Stretch" Padding="8,0,8,0"
+                Style="{StaticResource SquareButtonStyle}"
+                Content="..."
+                Click="RootDirectoryBrowse_Click"/>-->
+        
+        <Label x:Name="lblIndexFiles" Grid.Row="5"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0"
+               Content="Index Files"/>
+        <TextBox x:Name="txtIndexFiles" Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="4"
+                 Margin="0,0,0,6"
+                 TextWrapping="Wrap" Text="{Binding IndexFiles}"/>
     </Grid>
 </UserControl>

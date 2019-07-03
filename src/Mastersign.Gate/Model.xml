@@ -58,6 +58,14 @@
       </Property>
       <Property name="HttpsCertificate" type="Certificate"/>
       <Property name="Services" type="Service" isCollection="true" />
+
+      <Property name="RootDirectory">
+        <DefaultValue>www</DefaultValue>
+      </Property>
+      <Property name="IndexFiles">
+        <DefaultValue>index.html index.htm default.html default.htm</DefaultValue>
+      </Property>
+
     </Class>
     
     <Class name="Certificate">
@@ -87,12 +95,10 @@
       <Property name="IsProxy" type="bool" />
       
       <!-- Static Files Properties -->
-      <Property name="RootDirectory">
+      <Property name="TargetDirectory">
         <DefaultValue>www</DefaultValue>
       </Property>
-      <Property name="IndexFiles">
-        <DefaultValue>index.html index.htm default.html default.htm</DefaultValue>
-      </Property>
+      <Property name="IndexFiles" />
       
       <!-- Proxy Properties -->
       <Property name="Url">

@@ -55,14 +55,14 @@
                          IsChecked="{Binding IsProxy}" />
         </StackPanel>
 
-        <Label x:Name="lblRootDirectory" Grid.Row="3"
+        <Label x:Name="lblTargetDirectory" Grid.Row="3"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
                Visibility="{Binding IsProxy, Converter={StaticResource CollapsedFromBool}}"
-               Content="WWW Root"/>
-        <TextBox x:Name="txtRootDirectory" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
+               Content="Target Directory"/>
+        <TextBox x:Name="txtTargetDirectory" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="2"
                  Margin="0,0,0,6"
                  Visibility="{Binding IsProxy, Converter={StaticResource CollapsedFromBool}}"
-                 TextWrapping="Wrap" Text="{Binding RootDirectory}"/>
+                 TextWrapping="Wrap" Text="{Binding TargetDirectory}"/>
 
         <Label x:Name="lblIndexFiles" Grid.Row="4"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
