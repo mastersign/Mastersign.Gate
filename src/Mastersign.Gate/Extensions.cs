@@ -15,7 +15,7 @@ namespace Mastersign.Gate
 #if DEBUG
             msg += exc.ToString();
 #else
-            msg += exc2.Message;
+            msg += exc.Message;
 #endif
             while (exc.InnerException != null)
             {
@@ -23,7 +23,7 @@ namespace Mastersign.Gate
 #if DEBUG
                 msg += Environment.NewLine + Environment.NewLine + exc.ToString();
 #else
-                msg += Environment.NewLine + exc2.Message;
+                msg += Environment.NewLine + exc.Message;
 #endif
             }
             return msg;
