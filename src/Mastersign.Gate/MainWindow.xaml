@@ -8,12 +8,17 @@
         d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type local:DesignTimeCore}}"
         mc:Ignorable="d"
         Title="{Binding WindowTitle}" Height="600" Width="700"
-        ShowIconOnTitleBar="True" TitleCharacterCasing="Normal">
+        ShowIconOnTitleBar="True" TitleCharacterCasing="Normal" Icon="icon2.ico">
     <Window.CommandBindings>
         <CommandBinding Command="local:GateCommands.ProjectFileNew" CanExecute="ProjectFileNew_CanExecute" Executed="ProjectFileNew_Executed" />
         <CommandBinding Command="local:GateCommands.ProjectFileOpen" CanExecute="ProjectFileOpen_CanExecute" Executed="ProjectFileOpen_Executed" />
         <CommandBinding Command="local:GateCommands.ProjectFileSave" CanExecute="ProjectFileSave_CanExecute" Executed="ProjectFileSave_Executed" />
     </Window.CommandBindings>
+    <Controls:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <Image Source="{Binding}" SnapsToDevicePixels="True" Width="24" Height="24" />
+        </DataTemplate>
+    </Controls:MetroWindow.IconTemplate>
     <Grid>
         <Controls:MetroAnimatedSingleRowTabControl Margin="16,16,0,16" Grid.ColumnSpan="2">
             <TabItem Header="Project">
