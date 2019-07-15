@@ -52,7 +52,7 @@ namespace Mastersign.Gate
             {
                 Title = "Open Mastersign Gate Project...",
             };
-            dlg.Filters.Add(new CommonFileDialogFilter("YAML File", "*.yaml;*.yml"));
+            dlg.Filters.Add(new CommonFileDialogFilter("YAML File", "*.yml;*.yaml"));
             if (dlg.ShowDialog(this) != CommonFileDialogResult.Ok) return;
 
             try
@@ -80,7 +80,8 @@ namespace Mastersign.Gate
                 {
                     Title = "Save Mastersign Gate Project...",
                 };
-                dlg.Filters.Add(new CommonFileDialogFilter("YAML File (*.yaml, *.yml)", "*.yaml;*.yml"));
+                dlg.Filters.Add(new CommonFileDialogFilter("YAML File", "*.yml;*.yaml"));
+                dlg.DefaultFileName = "mgate.yml";
                 dlg.DefaultExtension = ".yml";
                 if (dlg.ShowDialog(this) != CommonFileDialogResult.Ok) return;
                 Core.ProjectFilePath = dlg.FileName;
