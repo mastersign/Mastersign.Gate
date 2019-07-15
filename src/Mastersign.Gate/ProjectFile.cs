@@ -16,8 +16,8 @@ namespace Mastersign.Gate
     public class ProjectFile<T>
     {
         private const string LEADING_COMMENT = "Mastersign Gate Project File";
-        public const string CURRENT_VERSION = "1.1";
-        private static readonly string[] SUPPORTED_VERSIONS = new[] { "1", "1.0", "1.1" };
+        public const string CURRENT_VERSION = "1.2";
+        private static readonly string[] SUPPORTED_VERSIONS = new[] { "1", "1.0", "1.1", "1.2" };
         private const int PROJECT_LOAD_RETRY_TIMEOUT_MS = 2000;
         private const int PROJECT_LOAD_RETRY_INTERVAL_MS = 100;
 
