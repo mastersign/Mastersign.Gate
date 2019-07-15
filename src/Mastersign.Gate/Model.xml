@@ -42,7 +42,7 @@
     <Class name="Server">
       <CustomInitializer>Initialize</CustomInitializer>
       <Property name="Host">
-        <DefaultValue>0.0.0.0</DefaultValue>
+        <DefaultValue>*</DefaultValue>
       </Property>
       <Property name="HttpPort" type="UInt16">
         <DefaultValue>80</DefaultValue>

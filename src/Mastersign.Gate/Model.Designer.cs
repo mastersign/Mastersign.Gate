@@ -621,7 +621,7 @@ namespace Mastersign.Gate
             this.OnPropertyChanged(@"Host");
         }
         
-        private const string DEF_HOST = @"0.0.0.0";
+        private const string DEF_HOST = @"*";
         
         [DefaultValue(DEF_HOST)]
         public virtual string Host
@@ -1542,7 +1542,7 @@ namespace Mastersign.Gate
             this.OnPropertyChanged(@"Url");
         }
         
-        private const string DEF_URL = @"http://127.0.0.1:8080/";
+        private const string DEF_URL = @"http://127.0.0.1:8080";
         
         [DefaultValue(DEF_URL)]
         public virtual string Url

@@ -426,20 +426,25 @@ namespace Mastersign.Gate
             return Process.Start(si);
         }
 
+        private static string AccessableFrontendHost(Server server)
+            => string.IsNullOrWhiteSpace(server.Host) || server.Host == "*" || server.Host == "0.0.0.0"
+                ? "localhost"
+                : server.Host;
+
         private void UpdateFrontendUrls()
         {
             var server = Core.Setup.Server;
             if (server.UseHttp)
             {
                 State.HttpFrontendUrl = "http://"
-                    + (string.IsNullOrWhiteSpace(server.Host) ? "localhost" : server.Host)
+                    + AccessableFrontendHost(server)
                     + (server.HttpPort == 80 ? string.Empty : ":" + server.HttpPort)
                     + "/";
             }
             if (server.UseHttps)
             {
                 State.HttpsFrontendUrl = "https://"
-                    + (string.IsNullOrWhiteSpace(server.Host) ? "localhost" : server.Host)
+                    + AccessableFrontendHost(server)
                     + (server.HttpsPort == 443 ? string.Empty : ":" + server.HttpsPort)
                     + "/";
             }
