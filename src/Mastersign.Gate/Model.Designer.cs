@@ -1308,6 +1308,7 @@ namespace Mastersign.Gate
             this._route = DEF_ROUTE;
             this._targetDirectory = DEF_TARGETDIRECTORY;
             this._url = DEF_URL;
+            this._clientMaxBodySize = DEF_CLIENTMAXBODYSIZE;
             this._headerXForwardedFor = DEF_HEADERXFORWARDEDFOR;
             
             this.IsChanged = false;
@@ -1611,6 +1612,9 @@ namespace Mastersign.Gate
             this.OnPropertyChanged(@"ClientMaxBodySize");
         }
         
+        private const string DEF_CLIENTMAXBODYSIZE = @"1m";
+        
+        [DefaultValue(DEF_CLIENTMAXBODYSIZE)]
         public virtual string ClientMaxBodySize
         {
             get { return _clientMaxBodySize; }
