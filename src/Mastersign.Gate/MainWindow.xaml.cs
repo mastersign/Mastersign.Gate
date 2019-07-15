@@ -97,36 +97,5 @@ namespace Mastersign.Gate
                     MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        //private async void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    await Task.WhenAll(
-        //        Core.NginxManager.FindSystemExecutable(),
-        //        Core.NginxManager.FindInternalExecutable(),
-        //        Core.NginxManager.FindOnlineExecutable());
-        //    if (Core.NginxManager.State.FoundOnlineExecutable)
-        //    {
-        //        await Core.NginxManager.DownloadOnlineExecutable();
-        //        if (Core.NginxManager.State.FoundResourceExecutable)
-        //        {
-        //            await Core.NginxManager.ExtractOnlineExecutable();
-        //            await Core.NginxManager.FindInternalExecutable();
-        //        }
-        //    }
-        //}
-
-        //private async void Button_Click_1(object sender, RoutedEventArgs e)
-        //{
-        //    string AbsolutePath(string root, string path)
-        //        => string.IsNullOrWhiteSpace(path)
-        //            ? root
-        //            : System.IO.Path.IsPathRooted(path) ? path : System.IO.Path.Combine(root, path);
-
-        //    var configDir = AbsolutePath(Environment.CurrentDirectory, Core.Setup.Directory);
-        //    var logDir = AbsolutePath(configDir, Core.Setup.LogDirectory);
-        //    var certDir = AbsolutePath(configDir, Core.Setup.CertificateDirectory);
-        //    await Core.NginxManager.SetupConfigDirectory(configDir, logDir, certDir, Core.Setup);
-        //    await Core.NginxManager.CheckConfigDirectory();
-        //}
     }
 }
