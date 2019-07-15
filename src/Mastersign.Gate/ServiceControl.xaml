@@ -108,6 +108,8 @@
                Content="Headers"/>
         <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.Column="1"
                     Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}">
+            <CheckBox x:Name="chkHeaderHost" Margin="0,2,10,6"
+                      Content="Host" IsChecked="{Binding HeaderHost}"/>
             <CheckBox x:Name="chkHeaderXForwardedFor" Margin="0,2,10,6"
                       Content="X-Forewarded-For" IsChecked="{Binding HeaderXForwardedFor}"/>
         </StackPanel>

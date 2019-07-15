@@ -51,6 +51,9 @@ namespace Mastersign.Gate
 
         private IEnumerable<string> HeadersConfig()
             => Chain(
+                HeaderHost
+                    ? Setting("proxy_set_header", "Host", "$host")
+                    : NoLines(),
                 HeaderXForwardedFor
                     ? Setting("proxy_set_header", "X-Forwarded-For", "$proxy_add_x_forwarded_for")
                     : NoLines()

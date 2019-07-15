@@ -1309,6 +1309,7 @@ namespace Mastersign.Gate
             this._targetDirectory = DEF_TARGETDIRECTORY;
             this._url = DEF_URL;
             this._clientMaxBodySize = DEF_CLIENTMAXBODYSIZE;
+            this._headerHost = DEF_HEADERHOST;
             this._headerXForwardedFor = DEF_HEADERXFORWARDEDFOR;
             
             this.IsChanged = false;
@@ -1758,6 +1759,42 @@ namespace Mastersign.Gate
                 }
                 _javaScriptContentRewrite = value;
                 this.OnJavaScriptContentRewriteChanged();
+            }
+        }
+        
+        #endregion
+        
+        #region Property HeaderHost
+        
+        private bool _headerHost;
+        
+        public event EventHandler HeaderHostChanged;
+        
+        protected virtual void OnHeaderHostChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = HeaderHostChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"HeaderHost");
+        }
+        
+        private const bool DEF_HEADERHOST = true;
+        
+        [DefaultValue(DEF_HEADERHOST)]
+        public virtual bool HeaderHost
+        {
+            get { return _headerHost; }
+            set
+            {
+                if ((value == _headerHost))
+                {
+                    return;
+                }
+                _headerHost = value;
+                this.OnHeaderHostChanged();
             }
         }
         

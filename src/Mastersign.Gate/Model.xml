@@ -112,6 +112,9 @@
       <Property name="HtmlContentRewrite" type="bool" />
       <Property name="CssContentRewrite" type="bool" />
       <Property name="JavaScriptContentRewrite" type="bool" />
+      <Property name="HeaderHost" type="bool">
+        <DefaultValue>True</DefaultValue>
+      </Property>
       <Property name="HeaderXForwardedFor" type="bool">
         <DefaultValue>True</DefaultValue>
       </Property>
