@@ -20,7 +20,10 @@ namespace Mastersign.Gate
                         UrlRewriteConfig(),
                         ContentRewriteConfig(),
                         HeadersConfig(),
-                        SupportWebSocketsConfig()
+                        SupportWebSocketsConfig(),
+                        !string.IsNullOrWhiteSpace(ClientMaxBodySize)
+                            ? Setting("client_max_body_size", ClientMaxBodySize)
+                            : NoLines()
                       )
                     : Chain(
                         Setting("alias", FsPath(SafeTargetDirectory)),

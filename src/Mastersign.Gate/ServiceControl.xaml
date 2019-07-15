@@ -111,7 +111,7 @@
             <CheckBox x:Name="chkHeaderXForwardedFor" Margin="0,2,10,6"
                       Content="X-Forewarded-For" IsChecked="{Binding HeaderXForwardedFor}"/>
         </StackPanel>
-        
+
         <Label x:Name="lblSupportWebSockets" Grid.Row="8"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
                Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}"
@@ -120,6 +120,15 @@
                   HorizontalAlignment="Left" VerticalAlignment="Center" Margin="0,2,0,6"
                   Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}"
                   IsChecked="{Binding SupportWebSockets}"/>
+
+        <Label x:Name="lblClientMaxBodySize" Grid.Row="9"
+               HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,6"
+               Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}"
+               Content="Client Max Body Size"/>
+        <TextBox x:Name="txtClientMaxBodySize" Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2"
+                  HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="0,2,0,6"
+                  Visibility="{Binding IsProxy, Converter={StaticResource VisibleFromBool}}"
+                  Text="{Binding ClientMaxBodySize}"/>
 
     </Grid>
 </UserControl>

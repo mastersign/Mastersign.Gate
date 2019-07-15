@@ -1594,6 +1594,39 @@ namespace Mastersign.Gate
         
         #endregion
         
+        #region Property ClientMaxBodySize
+        
+        private string _clientMaxBodySize;
+        
+        public event EventHandler ClientMaxBodySizeChanged;
+        
+        protected virtual void OnClientMaxBodySizeChanged()
+        {
+            this.IsChanged = true;
+            EventHandler handler = ClientMaxBodySizeChanged;
+            if (!ReferenceEquals(handler, null))
+            {
+                handler(this, EventArgs.Empty);
+            }
+            this.OnPropertyChanged(@"ClientMaxBodySize");
+        }
+        
+        public virtual string ClientMaxBodySize
+        {
+            get { return _clientMaxBodySize; }
+            set
+            {
+                if (string.Equals(value, _clientMaxBodySize))
+                {
+                    return;
+                }
+                _clientMaxBodySize = value;
+                this.OnClientMaxBodySizeChanged();
+            }
+        }
+        
+        #endregion
+        
         #region Property UrlRewrite
         
         private bool _urlRewrite;

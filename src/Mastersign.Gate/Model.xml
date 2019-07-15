@@ -105,6 +105,7 @@
         <DefaultValue>http://127.0.0.1:8080/</DefaultValue>
       </Property>
       <Property name="SupportWebSockets" type="bool" />
+      <Property name="ClientMaxBodySize" />
       <Property name="UrlRewrite" type="bool" />
       <Property name="HtmlContentRewrite" type="bool" />
       <Property name="CssContentRewrite" type="bool" />
