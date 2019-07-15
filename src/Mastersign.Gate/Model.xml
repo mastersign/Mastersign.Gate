@@ -102,7 +102,7 @@
       
       <!-- Proxy Properties -->
       <Property name="Url">
-        <DefaultValue>http://127.0.0.1:8080/</DefaultValue>
+        <DefaultValue>http://127.0.0.1:8080</DefaultValue>
       </Property>
       <Property name="SupportWebSockets" type="bool" />
       <Property name="ClientMaxBodySize" />
