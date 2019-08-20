@@ -260,6 +260,10 @@ namespace Mastersign.Gate
                     State.InternalVersion = "not found";
                 }
             }
+            catch (UnauthorizedAccessException)
+            {
+                State.InternalVersion = "access denied";
+            }
             finally
             {
                 State.CheckingInternalExecutable = false;
