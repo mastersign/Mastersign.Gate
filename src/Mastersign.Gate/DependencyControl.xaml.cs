@@ -48,7 +48,42 @@ namespace Mastersign.Gate
         public async void NginxDownload_Executed(object sender, RoutedEventArgs e)
         {
             if (!(DataContext is Core core)) return;
-            await core.NginxManager.DownloadOnlineExecutable();
+            try
+            {
+                await core.NginxManager.DownloadOnlineExecutable();
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show(
+                    "Writing to the resource directory was denied." + Environment.NewLine +
+                    Environment.NewLine +
+                    "Resource directory: " + core.AbsoluteResourceDirectory + Environment.NewLine +
+                    Environment.NewLine +
+                    "You may have to start Mastersign.Gate with Administrator priviledges to update Nginx.",
+                    "Downloading Nginx...",
+                    MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            catch (System.Net.WebException wex)
+            {
+                MessageBox.Show(
+                    "Error during download of Nginx:" + Environment.NewLine +
+                    Environment.NewLine +
+                    wex.Message + Environment.NewLine +
+                    wex.InnerException?.Message + Environment.NewLine +
+                    "(" + wex.InnerException?.GetType().FullName + ")",
+                    "Downloading Nginx...",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error during download of Nginx:" + Environment.NewLine +
+                    Environment.NewLine +
+                    ex.Message + Environment.NewLine +
+                    "(" + ex.GetType().FullName + ")",
+                    "Downloading Nginx...",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             if (core.NginxManager.State.FoundResourceExecutable)
             {
                 await core.NginxManager.ExtractOnlineExecutable();
