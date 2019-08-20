@@ -179,6 +179,8 @@ namespace Mastersign.Gate
 
         private string ResourcePath => Path.Combine(Core.AbsoluteResourceDirectory, "nginx.zip");
 
+        private string ResourceBackupPath => Path.ChangeExtension(ResourcePath, ".bak.zip");
+
         private string InternalExecutablePath => Path.Combine(Core.AbsoluteBinaryDirectory, "nginx.exe");
 
         public async Task DownloadOnlineExecutable()
@@ -199,12 +201,11 @@ namespace Mastersign.Gate
                 if (File.Exists(ResourcePath))
                 {
                     // create backup if target file already exists
-                    var backupFile = ResourcePath + ".bak";
-                    if (File.Exists(backupFile))
+                    if (File.Exists(ResourceBackupPath))
                     {
-                        File.Delete(backupFile);
+                        File.Delete(ResourceBackupPath);
                     }
-                    File.Move(ResourcePath, backupFile);
+                    File.Move(ResourcePath, ResourceBackupPath);
                 }
                 // ensure write access to target file
                 using (var _ = File.Create(ResourcePath, 256, FileOptions.DeleteOnClose)) { }
