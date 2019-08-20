@@ -195,10 +195,21 @@ namespace Mastersign.Gate
             {
                 if (!Directory.Exists(Core.AbsoluteResourceDirectory))
                     Directory.CreateDirectory(Core.AbsoluteResourceDirectory);
+
                 if (File.Exists(ResourcePath))
                 {
-                    File.Delete(ResourcePath);
+                    // create backup if target file already exists
+                    var backupFile = ResourcePath + ".bak";
+                    if (File.Exists(backupFile))
+                    {
+                        File.Delete(backupFile);
+                    }
+                    File.Move(ResourcePath, backupFile);
                 }
+                // ensure write access to target file
+                using (var _ = File.Create(ResourcePath, 256, FileOptions.DeleteOnClose)) { }
+
+                // download archive
                 using (var wc = new WebClient())
                 {
                     await wc.DownloadFileTaskAsync(State.OnlineExecutableUrl, ResourcePath);
