@@ -21,6 +21,7 @@ namespace Mastersign.Gate
             ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             ThemeManager.IsAutomaticWindowsAppModeSettingSyncEnabled = true;
+            ThemeManager.SyncThemeWithWindowsAppModeSetting();
 
             Core = new Core();
             Core.Start(e.Args);
