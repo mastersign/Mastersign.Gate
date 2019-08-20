@@ -86,7 +86,32 @@ namespace Mastersign.Gate
             }
             if (core.NginxManager.State.FoundResourceExecutable)
             {
-                await core.NginxManager.ExtractOnlineExecutable();
+                try
+                {
+                    await core.NginxManager.ExtractOnlineExecutable();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    MessageBox.Show(
+                        "Writing to the Nginx directory was denied." + Environment.NewLine +
+                        Environment.NewLine +
+                        "Nginx directory: " + core.AbsoluteBinaryDirectory + Environment.NewLine +
+                        Environment.NewLine +
+                        "You may have to start Mastersign.Gate with Administrator priviledges to update Nginx.",
+                        "Extracting Nginx...",
+                        MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        "Error during extraction of Nginx:" + Environment.NewLine +
+                        Environment.NewLine +
+                        ex.Message + Environment.NewLine +
+                        "(" + ex.GetType().FullName + ")",
+                        "Extracting Nginx...",
+                        MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
                 await core.NginxManager.FindInternalExecutable();
             }
         }
