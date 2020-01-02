@@ -20,13 +20,13 @@
         </DataTemplate>
     </Controls:MetroWindow.IconTemplate>
     <Grid>
-        <Controls:MetroAnimatedSingleRowTabControl Margin="16,16,0,16" Grid.ColumnSpan="2">
-            <TabItem Header="Project">
+        <Controls:MetroAnimatedSingleRowTabControl x:Name="tabs" Margin="16,16,0,16" Grid.ColumnSpan="2">
+            <TabItem x:Name="tabProject" Header="Project">
                 <ScrollViewer Margin="0,8,0,0" Padding="0,10,16,10">
                     <local:SetupControl />
                 </ScrollViewer>
             </TabItem>
-            <TabItem Header="Run">
+            <TabItem x:Name="tabRun" Header="Run">
                 <local:RunControl Margin="0,0,16,0"
                                   DataContext="{Binding NginxManager}" />
             </TabItem>

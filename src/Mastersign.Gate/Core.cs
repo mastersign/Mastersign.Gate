@@ -23,18 +23,24 @@ namespace Mastersign.Gate
 
         public void Start(string[] cliArgs)
         {
-            if (cliArgs.Length == 0)
+            if (cliArgs.Length > 0 && File.Exists(cliArgs.Last()))
+            {
+                OpenProjectFile(cliArgs[0]);
+            }
+            else
             {
                 var defaultProject = DEFAULT_PROJECT_FILES
                     .Select(fileName => Path.Combine(Environment.CurrentDirectory, fileName))
                     .FirstOrDefault(path => File.Exists(path));
                 if (defaultProject != null) OpenProjectFile(defaultProject);
             }
-            else if (cliArgs.Length == 1 && File.Exists(cliArgs[0]))
+            if (cliArgs.Contains("--run"))
             {
-                OpenProjectFile(cliArgs[0]);
+                RunAtStart = true;
             }
         }
+
+        #region Directory Paths
 
         public string ProgrammDirectory
             => Path.GetDirectoryName(new Uri(System.Reflection.Assembly.GetExecutingAssembly().CodeBase).LocalPath);
@@ -68,7 +74,11 @@ namespace Mastersign.Gate
                     ? path
                     : Path.Combine(AbsoluteConfigDirectory, path);
 
+        #endregion
+
         public NginxManager NginxManager { get; protected set; }
+
+        public bool RunAtStart { get; protected set; }
 
         #region Setup Observation
 

@@ -28,7 +28,17 @@ namespace Mastersign.Gate
         {
             InitializeComponent();
             DataContext = Core;
-            _ = Core.NginxManager.UpdateState();
+            Startup();
+        }
+
+        private async void Startup()
+        {
+            await Core.NginxManager.UpdateState();
+            if (Core.RunAtStart)
+            {
+                await Dispatcher.BeginInvoke((Action)(() => tabs.SelectedItem = tabRun));
+                Core.NginxManager.State.IsServerRunning = true;
+            }
         }
 
         public void ProjectFileNew_CanExecute(object sender, CanExecuteRoutedEventArgs e)
