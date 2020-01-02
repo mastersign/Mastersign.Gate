@@ -35,10 +35,10 @@ namespace Mastersign.Gate
         private void InitializeSerialization()
         {
             deserializer = new DeserializerBuilder()
-                .WithNamingConvention(new CamelCaseNamingConvention())
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
                 .Build();
             serializer = new SerializerBuilder()
-                .WithNamingConvention(new CamelCaseNamingConvention())
+                .WithNamingConvention(CamelCaseNamingConvention.Instance)
                 .WithTypeInspector(innerInspector => new SuppressChangeTrackingPropertiesTypeInspector(innerInspector))
                 .WithTypeInspector(innerInspector => new LeadingVersionTypeInspector(innerInspector))
                 .Build();
