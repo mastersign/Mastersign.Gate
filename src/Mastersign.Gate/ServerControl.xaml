@@ -29,7 +29,7 @@
         <Label x:Name="lblHost" Grid.Row="0" Grid.Column="0"
                HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,0,10,0"
                Content="Bind IP"/>
-        <TextBox x:Name="txtHost" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4"
+        <TextBox x:Name="txtHost" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,0,0,6"
                  HorizontalAlignment="Stretch" VerticalAlignment="Top"
                  Text="{Binding Host}"/>
 
